@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link'
-import type { FavoritesInteractiveProps } from './types'
+import type { FavoritesViewProps } from './types'
 import { accessibility } from '@/constants/accessibility'
 import { routes } from '@/constants/routes'
 import { FavoritesList } from '@/containers/favorites-list'
@@ -10,7 +10,7 @@ import { favoriteProduct } from './helpers'
 import { favoritesCopy } from './constants'
 import { favoritesStyles } from './styles'
 
-export function FavoritesInteractive({ loading }: FavoritesInteractiveProps) {
+export function FavoritesView({ loading }: FavoritesViewProps) {
   const { items, pending } = useFavorites()
   if (pending) return loading
   if (items.length === 0)
@@ -41,7 +41,9 @@ export function FavoritesInteractive({ loading }: FavoritesInteractiveProps) {
     >
       <h1 className={favoritesStyles.title}>{favoritesCopy.title}</h1>
       <p className={favoritesStyles.intro}>{favoritesCopy.intro}</p>
-      <FavoritesList products={items.map(favoriteProduct)} />
+      <div className={favoritesStyles.list}>
+        <FavoritesList products={items.map(favoriteProduct)} />
+      </div>
     </main>
   )
 }

@@ -1,4 +1,3 @@
-import type { EcoPart } from '@/types/catalog'
 import { tryCatchSync } from '@/utils/try-catch'
 import { favoritesConstants } from './constants'
 import type {
@@ -43,19 +42,6 @@ export function isFavoriteImage(
   )
 }
 
-function isEcoPart(value: unknown): value is EcoPart {
-  if (value === undefined || value === null) return true
-  if (!value || typeof value !== 'object') return false
-  const part = value as Record<string, unknown>
-  return (
-    typeof part.amount === 'number' &&
-    Number.isFinite(part.amount) &&
-    part.amount >= 0 &&
-    typeof part.currency === 'string' &&
-    part.currency.length > 0
-  )
-}
-
 export function isFavoriteItem(
   value: unknown,
   mediaHost: string,
@@ -69,8 +55,7 @@ export function isFavoriteItem(
     item.title.length > 0 &&
     typeof item.price === 'number' &&
     Number.isFinite(item.price) &&
-    isFavoriteImage(item.image, mediaHost) &&
-    isEcoPart(item.ecoPart)
+    isFavoriteImage(item.image, mediaHost)
   )
 }
 

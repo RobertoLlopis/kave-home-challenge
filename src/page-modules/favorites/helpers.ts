@@ -1,12 +1,13 @@
-import type { Product } from '@/services/catalog-api'
+import { Product } from '@/services/catalog-api/types'
 import type { FavoriteItem } from '@/providers/favorites-provider'
+
 export function favoriteProduct(item: FavoriteItem): Product {
   return {
     sku: item.sku,
     title: item.title,
+    collection: item.title.split(' ')[0] ?? item.sku,
     price: item.price,
     salePrice: null,
-    ecoPart: item.ecoPart ?? null,
     mainImage: item.image,
     images: [],
     slug: item.sku,

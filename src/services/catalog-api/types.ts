@@ -1,6 +1,3 @@
-import type { EcoPart } from '@/types/catalog'
-
-export type { EcoPart } from '@/types/catalog'
 export type Category = {
   id: number
   name: string
@@ -14,6 +11,11 @@ export type Envelope<T> = {
   previous: string | null
   results: T[]
 }
+export type SearchHit = {
+  title: string
+  sku: string
+  url: string
+}
 export type CatalogErrorKind =
   'http' | 'content-type' | 'timeout' | 'network' | 'contract'
 export type CatalogFetcher = typeof fetch
@@ -24,10 +26,10 @@ export type CatalogRequestOptions = {
 export type Product = {
   sku: string
   title: string
+  collection: string
   slug: string
   price: number
   salePrice: number | null
-  ecoPart: EcoPart
   mainImage: string | null
   images: string[]
   description: string

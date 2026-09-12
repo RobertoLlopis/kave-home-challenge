@@ -1,9 +1,14 @@
+export const homeAssets = {
+  heroImage:
+    'https://d.media.kavehome.com/image/upload/v1756305043/cms/landing-here-to-stay-img-01.jpg',
+} as const
+
 export const homeCopy = {
   title: 'Kave Home · Descubre tu hogar',
   categoriesTitle: 'Todo para tu hogar',
-  featuredTitle: 'Productos destacados',
   heroLines: ['Estar fuera.', 'Una manera muy nuestra de estar.'],
   eyebrow: 'New Collection',
-  cta: 'Ver productos',
+  editorialCta: 'Ver editorial',
+  productsCta: 'Ver productos',
   loadingLabel: 'Cargando inicio',
 } as const

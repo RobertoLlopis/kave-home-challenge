@@ -2,6 +2,7 @@ export const catalogApiConstants = {
   productsPath: 'products/',
   categoriesPath: 'categories/',
   revalidateSeconds: 300,
+  fallbackCollection: 'Kave Home',
   errorName: 'CatalogApiError',
   protocols: ['http:', 'https:'],
   messages: {
@@ -12,6 +13,7 @@ export const catalogApiConstants = {
     network: 'Catalog API is unavailable',
     invalidProduct: 'Invalid product response',
     invalidCategory: 'Invalid category response',
+    invalidSearch: 'Invalid search response',
     invalidResponse: 'Invalid API response',
     invalidEnvelope: 'Invalid API envelope',
     invalidPagination: 'Invalid pagination link',

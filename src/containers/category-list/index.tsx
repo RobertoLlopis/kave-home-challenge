@@ -4,6 +4,7 @@ import { Skeleton } from '@/primitives/skeleton'
 import { categoryListConstants } from './constants'
 import { categoryHref } from './helpers'
 import { categoryListStyles } from './styles'
+import { CategoryCarousel } from './category-carousel'
 import type { CategoryImageProps, CategoryListProps } from './types'
 
 function CategoryImage({ category }: CategoryImageProps) {
@@ -22,18 +23,18 @@ function CategoryImage({ category }: CategoryImageProps) {
 
 export function CategoryList({ categories }: CategoryListProps) {
   return (
-    <div className={categoryListStyles.row}>
-      {categories.slice(0, categoryListConstants.limit).map((category) => (
-        <Link
-          href={categoryHref(category.slug)}
-          key={category.id}
-          className={categoryListStyles.item}
-        >
-          <CategoryImage category={category} />
-          <span className={categoryListStyles.label}>{category.name}</span>
-        </Link>
-      ))}
-    </div>
+    <CategoryCarousel>
+      <ul className={categoryListStyles.row}>
+        {categories.slice(0, categoryListConstants.limit).map((category) => (
+          <li key={category.id} className={categoryListStyles.item}>
+            <Link href={categoryHref(category.slug)}>
+              <CategoryImage category={category} />
+              <span className={categoryListStyles.label}>{category.name}</span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </CategoryCarousel>
   )
 }
 

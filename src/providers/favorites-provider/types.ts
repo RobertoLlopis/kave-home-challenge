@@ -1,12 +1,10 @@
 import type { ReactNode } from 'react'
-import type { EcoPart } from '@/types/catalog'
 
 export type FavoriteItem = {
   sku: string
   title: string
   price: number
   image: string | null
-  ecoPart?: EcoPart
 }
 export type FavoriteStorage = Pick<Storage, 'getItem' | 'setItem'>
 export type FavoriteStorageAccessor = () => FavoriteStorage

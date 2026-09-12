@@ -1,6 +1,10 @@
+import type { ReactNode } from 'react'
+
 export type PaginationLinkProps = {
   href: string
-  children: string
+  label: string
+  children: ReactNode
+  current?: boolean
 }
 export type PaginationPageProps = {
   page: number

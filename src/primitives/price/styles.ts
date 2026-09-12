@@ -1,8 +1,9 @@
 import { commonStyles } from '@/styles/common'
+import { cn } from '@/utils/classnames'
 
 export const priceStyles = {
-  root: 'block text-sm',
+  root: 'block',
   previous: 'ml-2',
   eco: 'ml-2 block text-muted-foreground',
-  loading: `${commonStyles.skeletonLine} mt-2 w-2/3`,
+  loading: cn(commonStyles.skeletonLine, 'mt-2 w-2/3'),
 } as const

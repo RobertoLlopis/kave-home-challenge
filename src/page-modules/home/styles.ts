@@ -1,12 +1,18 @@
 import { commonStyles } from '@/styles/common'
+import { cn } from '@/utils/classnames'
 
 export const homeStyles = {
-  hero: 'mx-auto flex min-h-[clamp(28rem,65vw,42rem)] max-w-screen-2xl flex-col justify-end bg-[#263f53] px-6 py-12 text-white sm:px-10 lg:px-16',
-  heroEyebrow: 'text-sm',
+  hero: 'relative isolate flex min-h-[calc(100dvh-var(--header-height))] w-full items-end overflow-hidden bg-[#f1f0ed] px-5 py-10 text-white sm:px-10 lg:px-16',
+  heroImage: 'z-0 object-cover',
+  heroOverlay: 'absolute inset-0 z-10 bg-black/25',
+  heroContent:
+    'relative z-20 flex w-full flex-col gap-6 md:flex-row md:items-end md:justify-between',
+  heroCopy: 'max-w-4xl',
+  heroEyebrow: 'mb-2 text-xs font-normal',
   heroTitle:
-    'max-w-3xl text-[clamp(2.25rem,6vw,5rem)] font-medium leading-[.95] tracking-[-.05em]',
-  content: commonStyles.contentShell,
-  sectionTitle: 'mb-4 text-sm font-medium',
-  sectionTop: 'mt-16',
-  loadingHero: `${commonStyles.skeletonLine} w-2/3`,
+    'text-[clamp(2rem,4vw,3.5rem)] font-normal leading-[.98] tracking-[-.05em]',
+  heroActions: 'flex shrink-0 flex-wrap gap-2 md:grid md:grid-cols-2',
+  content: cn(commonStyles.contentShell, 'max-w-none'),
+  sectionTitle: 'mb-4 text-sm font-normal',
+  loadingHero: cn(commonStyles.skeletonLine, 'h-20 w-2/3'),
 } as const

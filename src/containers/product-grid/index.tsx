@@ -12,12 +12,17 @@ export function ProductGrid({ products }: ProductGridProps) {
     )
   return (
     <div className={productGridStyles.grid}>
-      {products.map((product) => (
-        <ProductCard key={product.sku} product={product} />
+      {products.map((product, index) => (
+        <ProductCard
+          key={product.sku}
+          product={product}
+          eagerImage={index < productGridConstants.eagerImageCount}
+        />
       ))}
     </div>
   )
 }
+
 ProductGrid.Loading = function ProductGridLoading({
   count,
 }: ProductGridLoadingProps) {

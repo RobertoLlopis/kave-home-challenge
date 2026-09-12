@@ -1,4 +1,9 @@
-export type { Category, EcoPart, Product } from './types'
+export type { Category, Product } from './types'
 export { CatalogApiError } from './error'
-export { getCategories, getProduct, getProducts } from './queries'
 export { normalizeProduct } from './normalization'
+export {
+  getCategories,
+  getProduct,
+  getProducts,
+  searchProducts,
+} from './queries'

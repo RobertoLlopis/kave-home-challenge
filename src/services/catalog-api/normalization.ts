@@ -2,7 +2,7 @@ import { environment } from '@/config/environment/runtime'
 import { tryCatchSync } from '@/utils/try-catch'
 import { catalogApiConstants } from './constants'
 import { CatalogApiError } from './error'
-import type { Category, EcoPart, Envelope, Product } from './types'
+import type { Category, Envelope, Product, SearchHit } from './types'
 
 const validAmount = (value: unknown): value is number =>
   typeof value === 'number' && Number.isFinite(value) && value >= 0
@@ -10,7 +10,7 @@ const validAmount = (value: unknown): value is number =>
 const validStock = (value: unknown): value is number =>
   validAmount(value) && Number.isInteger(value)
 
-const validPaginationLink = (value: unknown): value is string | null => {
+const validCatalogUrl = (value: unknown): value is string | null => {
   if (value === null) return true
   if (typeof value !== 'string') return false
   const [url, error] = tryCatchSync(() => new URL(value))
@@ -44,14 +44,6 @@ export function safeImage(value: unknown): string | null {
   return url.toString()
 }
 
-function ecoPart(value: unknown): EcoPart {
-  if (!value || typeof value !== 'object') return null
-  const record = value as Record<string, unknown>
-  if (!validAmount(record.amount) || typeof record.currency !== 'string')
-    return null
-  return { amount: record.amount, currency: record.currency }
-}
-
 export function normalizeProduct(value: unknown): Product | null {
   if (!value || typeof value !== 'object') return null
   const product = value as Record<string, unknown>
@@ -71,13 +63,16 @@ export function normalizeProduct(value: unknown): Product | null {
   return {
     sku: product.sku,
     title: product.title,
+    collection:
+      typeof product.collection === 'string' && product.collection.trim()
+        ? product.collection
+        : catalogApiConstants.fallbackCollection,
     slug:
       typeof product.slug === 'string'
         ? product.slug
         : product.sku.toLowerCase(),
     price: product.price,
     salePrice: product.salePrice == null ? null : product.salePrice,
-    ecoPart: ecoPart(product.ecoPart),
     mainImage: safeImage(product.mainImage) ?? images[0] ?? null,
     images,
     description:
@@ -113,10 +108,7 @@ export function normalizeEnvelope(value: unknown): Envelope<unknown> {
       catalogApiConstants.messages.invalidEnvelope,
       'contract',
     )
-  if (
-    !validPaginationLink(envelope.next) ||
-    !validPaginationLink(envelope.previous)
-  )
+  if (!validCatalogUrl(envelope.next) || !validCatalogUrl(envelope.previous))
     throw new CatalogApiError(
       catalogApiConstants.messages.invalidPagination,
       'contract',
@@ -171,4 +163,33 @@ export function normalizeCategoriesEnvelope(
 
 export function normalizeRequiredProduct(value: unknown): Product {
   return requiredProduct(value)
+}
+
+export function normalizeSearchHits(value: unknown): SearchHit[] {
+  if (!Array.isArray(value))
+    throw new CatalogApiError(
+      catalogApiConstants.messages.invalidSearch,
+      'contract',
+    )
+  return value.map((item) => {
+    if (!item || typeof item !== 'object')
+      throw new CatalogApiError(
+        catalogApiConstants.messages.invalidSearch,
+        'contract',
+      )
+    const hit = item as Record<string, unknown>
+    if (
+      typeof hit.title !== 'string' ||
+      !hit.title.trim() ||
+      typeof hit.sku !== 'string' ||
+      !hit.sku.trim() ||
+      typeof hit.url !== 'string' ||
+      !validCatalogUrl(hit.url)
+    )
+      throw new CatalogApiError(
+        catalogApiConstants.messages.invalidSearch,
+        'contract',
+      )
+    return { title: hit.title, sku: hit.sku, url: hit.url }
+  })
 }

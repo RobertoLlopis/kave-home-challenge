@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
 
-export type FavoritesInteractiveProps = {
+export type FavoritesViewProps = {
   loading: ReactNode
 }

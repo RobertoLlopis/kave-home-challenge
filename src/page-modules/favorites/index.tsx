@@ -1,11 +1,11 @@
 import { accessibility } from '@/constants/accessibility'
 import { FavoritesList } from '@/containers/favorites-list'
 import { favoritesCopy } from './constants'
-import { FavoritesInteractive } from './interactive'
+import { FavoritesView } from './favorites-view'
 import { favoritesStyles } from './styles'
 
 export default function FavoritesPage() {
-  return <FavoritesInteractive loading={<FavoritesPage.Loading />} />
+  return <FavoritesView loading={<FavoritesPage.Loading />} />
 }
 
 FavoritesPage.Loading = function FavoritesPageLoading() {

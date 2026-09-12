@@ -1,45 +1,66 @@
+import Image from 'next/image'
 import Link from 'next/link'
-import { Button } from '@/primitives/button'
 import { CategoryList } from '@/containers/category-list'
-import { ProductGrid } from '@/containers/product-grid'
-import { Pagination } from '@/primitives/pagination'
-import { catalog } from '@/constants/catalog'
+import { EditorialCarousel } from '@/containers/editorial-carousel'
 import { accessibility } from '@/constants/accessibility'
 import { routes } from '@/constants/routes'
-import { homeCopy } from './constants'
-import { homePageHref } from './helpers'
+import { Button } from '@/primitives/button'
+import { homeAssets, homeCopy } from './constants'
 import { homeStyles } from './styles'
 import type { HomePageProps } from './types'
 
-export function HomePage({ categories, products, page, pages }: HomePageProps) {
+export function HomePage({ categories }: HomePageProps) {
   return (
     <main
       id={accessibility.mainContentId}
       tabIndex={accessibility.mainContentTabIndex}
     >
       <section className={homeStyles.hero}>
-        <p className={homeStyles.heroEyebrow}>{homeCopy.eyebrow}</p>
-        <h1 className={homeStyles.heroTitle}>
-          {homeCopy.heroLines[0]}
-          <br />
-          {homeCopy.heroLines[1]}
-        </h1>
-        <Button nativeButton={false} render={<Link href={routes.products} />}>
-          {homeCopy.cta}
-        </Button>
+        <Image
+          src={homeAssets.heroImage}
+          alt=""
+          fill
+          sizes="100vw"
+          className={homeStyles.heroImage}
+          priority
+        />
+        <div className={homeStyles.heroOverlay} aria-hidden="true" />
+        <div className={homeStyles.heroContent}>
+          <div className={homeStyles.heroCopy}>
+            <p className={homeStyles.heroEyebrow}>{homeCopy.eyebrow}</p>
+            <h1 className={homeStyles.heroTitle}>
+              {homeCopy.heroLines[0]}
+              <br />
+              {homeCopy.heroLines[1]}
+            </h1>
+          </div>
+          <div className={homeStyles.heroActions}>
+            <Button
+              nativeButton={false}
+              variant="secondary"
+              render={<Link href="#" />}
+            >
+              {homeCopy.editorialCta}
+            </Button>
+            <Button
+              nativeButton={false}
+              variant="secondary"
+              render={<Link href={routes.products} />}
+            >
+              {homeCopy.productsCta}
+            </Button>
+          </div>
+        </div>
       </section>
       <section className={homeStyles.content}>
         <h2 className={homeStyles.sectionTitle}>{homeCopy.categoriesTitle}</h2>
         <CategoryList categories={categories} />
-        <h2 className={`${homeStyles.sectionTitle} ${homeStyles.sectionTop}`}>
-          {homeCopy.featuredTitle}
-        </h2>
-        <ProductGrid products={products} />
-        <Pagination page={page} pages={pages} href={homePageHref} />
+        <EditorialCarousel />
       </section>
     </main>
   )
 }
+
 HomePage.Loading = function HomeLoading() {
   return (
     <main
@@ -54,10 +75,7 @@ HomePage.Loading = function HomeLoading() {
       <section className={homeStyles.content}>
         <h2 className={homeStyles.sectionTitle}>{homeCopy.categoriesTitle}</h2>
         <CategoryList.Loading />
-        <h2 className={`${homeStyles.sectionTitle} ${homeStyles.sectionTop}`}>
-          {homeCopy.featuredTitle}
-        </h2>
-        <ProductGrid.Loading count={catalog.pageSize} />
+        <EditorialCarousel.Loading />
       </section>
     </main>
   )

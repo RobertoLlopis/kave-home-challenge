@@ -1,7 +1,9 @@
 export const paginationLabels = {
   navigation: 'Paginación',
-  previous: 'Anterior',
-  next: 'Siguiente',
+  previous: 'Página anterior',
+  next: 'Página siguiente',
+  page: (page: number, current: boolean) =>
+    current ? `Página actual: ${page}` : `Página ${page}`,
 } as const
 
 export function pageStatus(page: number, pages: number) {

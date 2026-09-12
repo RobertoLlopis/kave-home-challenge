@@ -1,44 +1,27 @@
 import { formatPrice } from '@/utils/format-price'
 import { Skeleton } from '@/primitives/skeleton'
-import { priceLabels } from './constants'
+import { cn } from '@/utils/classnames'
 import { priceStyles } from './styles'
-import type {
-  EcoPartLabelProps,
-  EcoPartSectionProps,
-  PreviousPartProps,
-  PreviousPriceProps,
-  PriceProps,
-} from './types'
+import type { PreviousPartProps, PreviousPriceProps, PriceProps } from './types'
 
 function PreviousPrice({ value }: PreviousPriceProps) {
   return <del className={priceStyles.previous}>{formatPrice(value)}</del>
 }
-function EcoPartLabel({ part }: EcoPartLabelProps) {
-  return (
-    <small className={priceStyles.eco}>
-      {priceLabels.ecoPartPrefix}
-      {formatPrice(part.amount)}
-      {priceLabels.ecoPartSuffix}
-    </small>
-  )
-}
+
 function PreviousPart({ previous, value }: PreviousPartProps) {
   if (previous == null || previous === value) return null
   return <PreviousPrice value={previous} />
 }
-function EcoPartSection({ ecoPart }: EcoPartSectionProps) {
-  if (!ecoPart || ecoPart.amount <= 0) return null
-  return <EcoPartLabel part={ecoPart} />
-}
-export function Price({ value, previous, ecoPart }: PriceProps) {
+
+export function Price({ value, previous, className }: PriceProps) {
   return (
-    <span className={priceStyles.root}>
-      <strong>{formatPrice(value)}</strong>
+    <span data-slot="price" className={cn(priceStyles.root, className)}>
+      <span>{formatPrice(value)}</span>
       <PreviousPart previous={previous} value={value} />
-      <EcoPartSection ecoPart={ecoPart} />
     </span>
   )
 }
+
 Price.Loading = function PriceLoading() {
   return <Skeleton className={priceStyles.loading} aria-hidden="true" />
 }

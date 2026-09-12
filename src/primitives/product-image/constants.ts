@@ -1,4 +1,4 @@
 export const productImageConstants = {
   fallbackPrefix: 'Imagen no disponible para ',
-  placeholderPath: '/images/product-placeholder.svg',
+  placeholderPath: '/icon.png',
 } as const

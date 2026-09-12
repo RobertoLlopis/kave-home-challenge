@@ -1,18 +1,9 @@
 'use client'
-import { createContext, useContext, useEffect, useState } from 'react'
+
+import { createContext, useContext } from 'react'
 import { favoritesConstants } from './constants'
-import {
-  getFavoriteStorage,
-  initialFavoritesState,
-  loadFavorites,
-  saveFavorites,
-  toggleFavorite,
-} from './helpers'
-import type {
-  FavoriteItem,
-  FavoritesContextValue,
-  FavoritesProviderProps,
-} from './types'
+import { useFavoritesState } from './hooks'
+import type { FavoritesContextValue, FavoritesProviderProps } from './types'
 export type { FavoriteItem } from './types'
 export {
   getFavoriteStorage,
@@ -31,33 +22,9 @@ export function FavoritesProvider({
   children,
   mediaHost,
 }: FavoritesProviderProps) {
-  const [items, setItems] = useState(initialFavoritesState.items)
-  const [pending, setPending] = useState(initialFavoritesState.pending)
-  useEffect(() => {
-    queueMicrotask(() => {
-      setItems(loadFavorites(getFavoriteStorage(), mediaHost))
-      setPending(false)
-    })
-  }, [mediaHost])
-  function toggle(item: FavoriteItem) {
-    setItems((current) => {
-      const next = toggleFavorite(current, item)
-      saveFavorites(getFavoriteStorage(), next)
-      return next
-    })
-  }
-  return (
-    <Context
-      value={{
-        items,
-        pending,
-        toggle,
-        has: (sku) => items.some((item) => item.sku === sku),
-      }}
-    >
-      {children}
-    </Context>
-  )
+  const value = useFavoritesState(mediaHost)
+
+  return <Context value={value}>{children}</Context>
 }
 
 export function useFavorites() {

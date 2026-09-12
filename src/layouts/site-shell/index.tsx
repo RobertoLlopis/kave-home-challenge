@@ -1,4 +1,6 @@
 import Link from 'next/link'
+import { Heart } from 'lucide-react'
+import { SearchControl } from '@/containers/search-control'
 import { accessibility } from '@/constants/accessibility'
 import { routes } from '@/constants/routes'
 import { siteShellConstants } from './constants'
@@ -22,11 +24,13 @@ export function SiteShell({ children }: SiteShellProps) {
           aria-label={accessibility.primaryNavLabel}
           className={shellStyles.nav}
         >
-          <Link className={shellStyles.navLink} href={routes.products}>
-            {siteShellConstants.productsLabel}
-          </Link>
-          <Link className={shellStyles.navLink} href={routes.favorites}>
-            {siteShellConstants.favoritesLabel}
+          <SearchControl />
+          <Link
+            className={shellStyles.iconLink}
+            href={routes.favorites}
+            aria-label={siteShellConstants.favoritesLabel}
+          >
+            <Heart aria-hidden="true" />
           </Link>
         </nav>
       </header>

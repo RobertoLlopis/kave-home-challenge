@@ -9,11 +9,13 @@ npm install
 npm run dev
 ```
 
-Puertas: `/` (home + catálogo paginado), `/products`, `/products/:sku` y `/favorites`.
+`npm run dev` utiliza snapshots versionados de respuestas reales para que el checkpoint antifraude de Vercel no bloquee el trabajo local. `npm run dev:live` consulta directamente la API pública cuando esté disponible. El build y la aplicación de producción siempre usan la API configurada; los snapshots solo los consume `scripts/development.mjs`.
+
+Rutas: `/`, `/products`, `/products/:sku`, `/favorites` y `/search?q=...`.
 
 ## Arquitectura
 
-Las rutas son adaptadores App Router; el layout raíz vive en `src/layouts/root-layout`, el shell en `src/layouts/site-shell` y la UI se organiza en `src/page-modules`, `src/primitives`, `src/containers`, `src/providers`, `src/services`, `src/utils` y `src/config`. Favoritos es la única frontera client: Context + `localStorage` versionado y validado. La API real se consume sin mocks ni fixtures. Las primitivas Button, Card, Skeleton y Pagination parten del registro oficial `@shadcn` mediante `npx shadcn@latest add`. shadcn es una plataforma de distribución de código, no una librería runtime; el preset oficial `base-nova` usa Base UI como capa headless subyacente para Button y su polimorfismo `render`. Se conserva `@base-ui/react` porque Button lo usa realmente en CTAs y enlaces. La API expuesta se redujo a las variantes y exports usados por las páginas actuales; no se añaden componentes futuros.
+Las rutas son adaptadores App Router; el layout raíz vive en `src/layouts/root-layout`, el shell en `src/layouts/site-shell` y la UI se organiza en `src/page-modules`, `src/primitives`, `src/containers`, `src/providers`, `src/services`, `src/utils` y `src/config`. Las fronteras cliente se limitan a favoritos, carruseles y el control de búsqueda; los resultados se renderizan en servidor. La búsqueda enriquece en paralelo los resultados `{ sku, title, url }` con el detalle cacheable de cada producto para reutilizar las tarjetas del catálogo. Button, Input y Drawer usan Base UI como capa headless. La integración de producción consume la API real sin fallback; el servidor auxiliar de desarrollo vive fuera de `src` y sirve únicamente snapshots capturados.
 
 ## Configuración
 
@@ -32,7 +34,7 @@ npm run format:check && npm test && npm run build
 
 ## Limitaciones conocidas
 
-La API pública puede responder con checkpoint/429; el boundary de error ofrece un reintento honesto y no sustituye la respuesta por mocks. Los productos pueden no tener imágenes y muestran un estado explícito. El botón de cesta permanece deshabilitado porque checkout está fuera del alcance. Las imágenes editoriales de Home no forman parte del contrato público, por lo que la sección editorial usa contenido local mínimo.
+La API pública puede responder con checkpoint/429; `npm run dev:live` conserva ese error real y el boundary ofrece un reintento honesto. Para mantener estable el desarrollo visual, `npm run dev` sirve snapshots capturados de 20 productos y 8 categorías, sin intervenir en producción. La búsqueda enriquece en paralelo todos los SKU devueltos por el endpoint público, que actualmente responde con cinco referencias. Los productos pueden no tener imágenes y muestran un estado explícito. El botón de cesta permanece deshabilitado porque checkout está fuera del alcance.
 
 ## IA
 

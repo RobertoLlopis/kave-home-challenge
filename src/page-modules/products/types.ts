@@ -7,6 +7,8 @@ export type ProductsPageProps = {
   products: Product[]
   page: number
   category?: string
+  heading: string
+  description: string
   pages: number
 }
 export type ProductsPageMetadata = Metadata

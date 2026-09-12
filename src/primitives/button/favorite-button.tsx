@@ -1,19 +1,31 @@
 'use client'
+import { Heart } from 'lucide-react'
 import { useFavorites } from '@/providers/favorites-provider'
+import { cn } from '@/utils/classnames'
 import { Button } from './index'
 import { favoriteLabels } from './constants'
-import { favoriteButtonStyles } from './styles'
+import { favoriteButtonStyles, favoriteIconStyles } from './styles'
 import type { FavoriteButtonProps, FavoriteMarkProps } from './types'
 
 function FavoriteMark({ active }: FavoriteMarkProps) {
-  if (active) return <>♥</>
-  return <>♡</>
+  return (
+    <Heart
+      aria-hidden="true"
+      className={cn(
+        favoriteIconStyles.root,
+        active && favoriteIconStyles.active,
+      )}
+      strokeWidth={1.75}
+    />
+  )
 }
+
 function favoriteLabel(active: boolean) {
   if (active) return favoriteLabels.remove
   return favoriteLabels.add
 }
-export function FavoriteButton({ item }: FavoriteButtonProps) {
+
+export function FavoriteButton({ item, className }: FavoriteButtonProps) {
   const { has, toggle } = useFavorites()
   const active = has(item.sku)
   return (
@@ -22,7 +34,7 @@ export function FavoriteButton({ item }: FavoriteButtonProps) {
       aria-label={favoriteLabel(active)}
       aria-pressed={active}
       onClick={() => toggle(item)}
-      className={favoriteButtonStyles}
+      className={cn(favoriteButtonStyles, className)}
     >
       <FavoriteMark active={active} />
     </Button>

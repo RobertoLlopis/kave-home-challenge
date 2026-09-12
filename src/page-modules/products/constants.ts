@@ -1,6 +1,7 @@
 export const productsCopy = {
   title: 'Productos · Kave Home',
   heading: 'Productos',
-  description: 'Descubre piezas para cada espacio de tu hogar.',
+  description:
+    'Descubre muebles y decoración diseñados para crear espacios únicos, funcionales y llenos de personalidad.',
   loadingLabel: 'Cargando productos',
 } as const

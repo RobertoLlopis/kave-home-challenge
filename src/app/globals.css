@@ -12,6 +12,7 @@
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
   --color-ring: var(--ring);
+  --color-favorite: var(--favorite);
   --font-sans: var(--font-poppins);
 }
 
@@ -27,6 +28,8 @@
   --primary: #353530;
   --primary-foreground: #fff;
   --ring: #353530;
+  --favorite: #fa0038;
+  --header-height: 2.25rem;
 }
 
 @layer base {
