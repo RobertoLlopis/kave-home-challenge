@@ -82,18 +82,24 @@ La misma regla se aplica a los estados de carga. Un `loading.tsx` compone el `.L
 - **Contrato defensivo:** se validan HTTP, tipo de contenido, JSON, URLs, imágenes y registros antes de llegar a la UI.
 - **Paginación por URL:** compartir o recargar una página conserva el estado y produce una canonical estable.
 - **Favoritos resilientes:** el esquema de almacenamiento está versionado y tolera datos corruptos, acceso bloqueado y errores de cuota.
-- **Sin filtro de categoría ficticio:** el endpoint de productos devuelve los mismos resultados con `category`; las fichas de categoría enlazan al catálogo completo en lugar de aparentar un filtrado inexistente.
 - **Dependencia externa visible:** producción no oculta indisponibilidad de la API mediante snapshots automáticos.
 
 ## API y desarrollo determinista
 
-La API pública puede responder con HTTP `429`, contenido HTML y la cabecera `x-vercel-mitigated: challenge`. Es un **Vercel Security Checkpoint**, no una cuota ordinaria del API.
+Durante el desarrollo apareció una diferencia importante entre abrir la API y consumirla desde la aplicación. El endpoint devolvía JSON correctamente al visitarlo directamente con Chrome, pero un `fetch` desde localhost era rechazado por CORS. Mantener las llamadas en Server Components era la opción correcta, aunque desde Node y, más tarde, desde Vercel esas mismas peticiones recibían un `429` con una página HTML de **Vercel Security Checkpoint** en lugar del JSON esperado.
 
-CORS es un problema distinto: puede impedir una llamada directa desde el navegador, pero no explica el `429` observado en solicitudes servidor-a-servidor. La aplicación consulta el catálogo desde Next.js, por lo que el bloqueo relevante es el checkpoint externo.
+Esto impedía trabajar de forma estable con el catálogo e incluso podía hacer fallar el build si Next.js intentaba obtener los datos durante el prerender. Se prepararon dos medidas complementarias:
 
-`connection()` evita que las rutas dependientes del catálogo ejecuten esa llamada durante el prerender del build y la desplaza al momento de la petición. Esto permite construir la aplicación, pero no garantiza que la API vaya a aceptar la solicitud en runtime.
+1. `connection()` retrasa la consulta hasta que llega una petición real. De esta forma el build no depende de que la API esté disponible, aunque no elimina el bloqueo cuando la ruta se ejecuta.
+2. `scripts/development.mjs` levanta en loopback una copia acotada del contrato real a partir de snapshots capturados y validados. Así se puede desarrollar y revisar toda la interfaz sin inventar un backend diferente ni depender del estado del checkpoint.
 
-Para que el desarrollo y la revisión visual sean reproducibles, `scripts/development.mjs` sirve en loopback snapshots versionados con tres páginas de productos y categorías relacionadas. Este mecanismo sólo se activa con `npm run dev`; `dev:live` y producción mantienen la integración real y hacen visibles sus fallos.
+Los modos quedan separados deliberadamente:
+
+- `npm run dev` usa los snapshots y ofrece un entorno local reproducible.
+- `npm run dev:live` consulta la API pública para comprobar la integración y mostrar sus errores reales.
+- Producción consulta siempre la API pública; nunca cambia silenciosamente a datos locales.
+
+La contrapartida es que el modo determinista sólo contiene tres páginas de productos y una selección de categorías, por lo que sirve para desarrollo y evaluación visual, no como sustituto del servicio real. El despliegue actual en Vercel confirma el mismo bloqueo servidor-a-servidor y muestra el estado de error previsto en las rutas que necesitan catálogo.
 
 ## Proceso de trabajo
 
@@ -121,13 +127,21 @@ No se añadieron dependencias de testing de componentes ni una suite E2E sólo p
 ## Limitaciones conocidas
 
 - La integración live depende de que el checkpoint externo permita la solicitud servidor-a-servidor.
-- No existe listado filtrado por categoría porque `/products/` ignora ese parámetro. Kave Home realiza ese filtrado mediante Algolia, cuyas credenciales de búsqueda no forman parte del contrato entregado.
 - Los snapshots locales cubren tres páginas y no sustituyen una integración de producción.
 - Carrito y checkout están fuera de alcance; sus controles permanecen deshabilitados.
-- La validación en Vercel confirma la limitación: las rutas dependientes del catálogo muestran el estado de error cuando el checkpoint rechaza la solicitud; `/favorites` y las demás superficies estáticas funcionan normalmente.
+- En el despliegue actual las rutas dependientes del catálogo muestran el estado de error cuando el checkpoint rechaza la solicitud; `/favorites` y las superficies estáticas funcionan normalmente.
 
 ## Uso de IA
 
-La IA se utilizó como apoyo para explorar el repositorio y el contrato externo, proponer alternativas, implementar, escribir pruebas y ejecutar auditorías sucesivas de código, accesibilidad, SEO y documentación.
+La IA formó parte del proceso de desarrollo, pero no se utilizó como un generador único al que entregar el briefing y aceptar el primer resultado. El trabajo se dividió en fases pequeñas, con decisiones y revisiones registradas en los documentos locales de `.idea`: consolidación de requisitos, scaffold mínimo, inspección del contrato real, implementación por rutas, reparación arquitectónica, auditorías visuales y cierre.
 
-Las decisiones documentadas de alcance y arquitectura —server-first, promoción por reutilización, snapshots sólo para desarrollo y ausencia de fallback silencioso— se asumieron explícitamente para esta entrega. Las propuestas generadas con IA se contrastaron con el briefing, el comportamiento observado de la API y el quality gate; la selección y responsabilidad final permanecen en el candidato.
+Algunas decisiones se refinaron precisamente a partir de ese diálogo:
+
+- mantener la obtención de datos en servidor en vez de trasladarla al cliente para esquivar el problema de la API;
+- separar desarrollo determinista, integración live y producción, descartando un fallback silencioso;
+- evolucionar desde componentes ligados a Home hacia la regla fractal de promoción sólo cuando apareció reutilización real;
+- mantener carrito y checkout deshabilitados antes que simular comportamiento no solicitado;
+- reducir los tests a contratos y casos de fallo con impacto, en vez de medir cobertura por cantidad;
+- componer los estados de carga desde los loadings de cada container para que sigan la estructura final de la página.
+
+La IA ayudó a explorar alternativas, ejecutar implementaciones acotadas, contrastar documentación oficial y actuar como revisora independiente en sucesivas rondas de arquitectura, TypeScript, accesibilidad, SEO, responsive y tests. Varias propuestas fueron corregidas o descartadas tras compararlas con el briefing, las capturas y el comportamiento observado de la API. La selección de alcance, la aceptación de cada fase y la responsabilidad sobre el resultado final permanecieron en el candidato.
