@@ -1,5 +1,6 @@
 import { ChevronDown } from 'lucide-react'
 import { Button } from '@/primitives/button'
+import { Skeleton } from '@/primitives/skeleton'
 import { productPurchaseConstants } from './constants'
 import { availableQuantities } from './helpers'
 import { purchaseStyles } from './styles'
@@ -36,6 +37,17 @@ export function ProductPurchase({ stock }: ProductPurchaseProps) {
         >
           {productPurchaseConstants.cta}
         </Button>
+      </div>
+    </div>
+  )
+}
+
+ProductPurchase.Loading = function ProductPurchaseLoading() {
+  return (
+    <div className={purchaseStyles.root} aria-hidden="true">
+      <div className={purchaseStyles.row}>
+        <Skeleton className={purchaseStyles.loadingSelect} />
+        <Skeleton className={purchaseStyles.loadingCta} />
       </div>
     </div>
   )

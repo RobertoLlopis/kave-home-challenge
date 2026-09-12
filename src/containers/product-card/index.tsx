@@ -58,7 +58,11 @@ export function ProductCard({ product, eagerImage = false }: ProductCardProps) {
         >
           {product.title}
         </Link>
-        <Price value={current} previous={previous} />
+        <Price
+          value={current}
+          previous={previous}
+          className={productCardStyles.price}
+        />
       </div>
     </Card>
   )

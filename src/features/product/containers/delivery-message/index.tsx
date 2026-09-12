@@ -1,4 +1,5 @@
 import { Truck } from 'lucide-react'
+import { Skeleton } from '@/primitives/skeleton'
 import { commonStyles } from '@/styles/common'
 import { deliveryMessageConstants } from './constants'
 import { deliveryDateRange, formatDeliveryDate } from './helpers'
@@ -26,5 +27,14 @@ export function DeliveryMessage({ now = new Date() }: DeliveryMessageProps) {
         .
       </span>
     </p>
+  )
+}
+
+DeliveryMessage.Loading = function DeliveryMessageLoading() {
+  return (
+    <div className={deliveryMessageStyles.delivery} aria-hidden="true">
+      <Skeleton className={deliveryMessageStyles.loadingIcon} />
+      <Skeleton className={deliveryMessageStyles.loadingText} />
+    </div>
   )
 }

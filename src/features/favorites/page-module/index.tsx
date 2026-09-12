@@ -18,7 +18,9 @@ FavoritesPage.Loading = function FavoritesPageLoading() {
       aria-label={favoritesCopy.loadingLabel}
     >
       <h1 className={favoritesStyles.title}>{favoritesCopy.title}</h1>
-      <FavoritesList.Loading />
+      <div className={favoritesStyles.list}>
+        <FavoritesList.Loading />
+      </div>
     </main>
   )
 }

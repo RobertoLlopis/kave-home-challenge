@@ -1,6 +1,23 @@
 # Kave Home · Frontend Challenge
 
-Storefront con Next.js 16, React 19, TypeScript y Tailwind CSS 4 para descubrir productos y guardar favoritos.
+Storefront responsive construido con Next.js 16, React 19, TypeScript y Tailwind CSS 4. Consume el catálogo público de Kave Home, permite explorar productos y categorías y conserva favoritos en el navegador.
+
+## Vista rápida
+
+Las capturas se generaron sobre el modo local determinista incluido en el proyecto.
+
+<img src="docs/readme/home-hero.jpg" alt="Hero editorial de la página de inicio" width="100%">
+
+<table>
+  <tr>
+    <td width="50%">
+      <img src="docs/readme/home-categories.jpg" alt="Categorías destacadas de la página de inicio">
+    </td>
+    <td width="50%">
+      <img src="docs/readme/product-detail.jpg" alt="Detalle de producto con galería, precio y favorito">
+    </td>
+  </tr>
+</table>
 
 ## Puesta en marcha
 
@@ -10,78 +27,81 @@ cp .env.example .env.local
 npm run dev
 ```
 
-`npm run dev` usa datos capturados y reproducibles. `npm run dev:live` consulta la API pública. Para producción local: `npm run build && npm start`.
+- `npm run dev`: Next.js con snapshots locales reproducibles.
+- `npm run dev:live`: integración directa con la API pública y sus errores reales.
+- `npm run build && npm start`: comportamiento de producción, sin fallback oculto a snapshots.
 
-Rutas: `/`, `/products`, `/products/[sku]`, `/favorites` y `/search?q=...`.
+Rutas disponibles: `/`, `/products`, `/products/[sku]`, `/categories`, `/categories/[slug]`, `/favorites` y `/search?q=...`.
 
 ## Funcionalidad
 
-- Home editorial y categorías.
-- Catálogo de 20 productos por página, filtro por categoría y paginación por URL.
+- Home editorial con categorías y 20 productos por página.
+- Catálogo paginado mediante la URL, con canonical y normalización de páginas inválidas.
+- Fichas de categoría con contenido editorial y subcategorías.
 - Detalle de producto con galería, precio, disponibilidad y favorito.
 - Favoritos con React Context y persistencia versionada en `localStorage`.
-- Búsqueda, estados de carga, vacío, error y producto sin imagen.
+- Búsqueda por el endpoint público.
+- Estados de carga, vacío, error, recurso inexistente e imagen no disponible.
 - Diseño mobile-first, HTML semántico, navegación por teclado y metadata por ruta.
 
 ## Arquitectura
 
-App Router se mantiene como una capa fina — cada ruta reexporta desde el módulo que la implementa. La estructura sigue un patrón **fractal**: lo que es común a varias features vive en el nivel compartido inmediatamente superior; lo propio de una feature se queda dentro de ella.
+El proyecto aplica una arquitectura fractal entendida como **co-localización con promoción por reutilización**, no como una plantilla de carpetas que haya que repetir completa.
 
-```
+```text
 src/
-  app/                  ← capa fina: reexporta layouts y pages
-  features/             ← lógica de dominio por feature
-    favorites/          ← page-module, containers/list y layout propios
-    home/
-    product/
-    products/
-    search/
-  containers/           ← composiciones compartidas entre features
-    favorite-button/    ← header, product-card, product-image, price, pagination, etc.
-  primitives/           ← átomos de UI: button, card, input, skeleton
-  providers/            ← estado global: favorites (usado por root-layout + containers)
-  layouts/              ← layouts globales: root-layout, site-shell
-  page-modules/         ← solo páginas transversales: error, not-found
-  services/             ← integración externa: catalog-api
-  utils/                ← funciones puras: classnames, format-price, pagination, try-catch
-  config/               ← variables de entorno validadas
-  constants/            ← constantes globales: accesibilidad, catálogo, rutas
-  styles/               ← estilos compartidos
+  app/            adaptadores finos del App Router
+  features/       páginas y UI propias de cada dominio
+  containers/     composiciones reutilizadas entre features
+  primitives/     piezas mínimas de interfaz
+  providers/      estado cliente transversal
+  layouts/        composiciones globales
+  page-modules/   páginas transversales de error y not-found
+  services/       frontera con la API externa
+  config/         entorno validado
+  constants/      contratos compartidos
+  utils/          funciones puras reutilizables
 ```
 
-### Disposición fractal
+Una pieza nace junto a la feature que la necesita. Sólo se promociona al ancestro común más cercano cuando aparece reutilización real:
 
-Cada feature repite la misma estructura interna:
+- Home y Products usan `ProductListing`, por lo que vive en `src/containers/product-listing`.
+- Home y las dos superficies de categorías usan `CategoryList`, promovido a `src/containers/category-list`.
+- `FavoriteButton` y `FavoritesProvider` son compartidos por varias rutas y viven fuera de una feature concreta.
+- `Button`, `Card`, `Input` y `Skeleton` no conocen el dominio y permanecen en `primitives`.
 
-```
-features/<feature>/
-  page-module/          ← render, metadata, page component, helpers, constants, styles, types
-  containers/           ← composiciones de UI propias de la feature
-  provider/             ← contexto/estado (solo si aplica)
-  layout.tsx            ← layout de ruta (solo si la feature lo necesita)
-```
+La misma regla se aplica a los estados de carga. Un `loading.tsx` compone el `.Loading` del módulo de página; éste compone loadings de containers, y los containers delegan en sus hijos. Así el esqueleto mantiene la misma estructura que la interfaz final sin duplicar su markup en la ruta.
 
-**Regla de promoción:** cuando un container, provider o primitiva se usa desde **dos o más features o desde un nivel superior** (ej: root-layout), se promociona al nivel compartido:
+`app/` sólo conecta convenciones de Next.js con módulos de página. Los Server Components resuelven catálogo y metadata; el JavaScript cliente se reserva para favoritos, búsqueda y carruseles. `catalog-api` concentra transporte, timeout, clasificación de errores y normalización del contrato externo.
 
-- `FavoritesProvider` lo inyecta `root-layout` (global) y lo consume `FavoriteButton` (container compartido) → `src/providers/favorites/`.
-- `FavoriteButton` lo usan `containers/product-card` y `features/favorites` → `src/containers/favorite-button/`.
-- `Price`, `ProductImage`, `ProductCard`, `ProductGrid` los usan tanto products como product-detail → `src/containers/`.
-- `Button`, `Card`, `Input`, `Skeleton` los usan todos los containers → `src/primitives/`.
-- `classnames`, `try-catch` los usan todos los módulos → `src/utils/`.
+## Decisiones técnicas
 
-El catálogo se obtiene en Server Components, valida HTTP, JSON y contrato, aplica timeout y usa la caché de `fetch` con revalidación de cinco minutos. El JavaScript cliente se limita a favoritos, búsqueda y carruseles; las primitivas parten de shadcn/Base UI. Poppins se sirve con `next/font` y las imágenes con `next/image`.
-
-La configuración pública está centralizada y validada en `src/config/environment`; no hay secretos ni URLs operativas dispersas.
+- **Server-first:** catálogo y metadata se resuelven en servidor; no se expone la integración a componentes cliente.
+- **Contrato defensivo:** se validan HTTP, tipo de contenido, JSON, URLs, imágenes y registros antes de llegar a la UI.
+- **Paginación por URL:** compartir o recargar una página conserva el estado y produce una canonical estable.
+- **Favoritos resilientes:** el esquema de almacenamiento está versionado y tolera datos corruptos, acceso bloqueado y errores de cuota.
+- **Sin filtro de categoría ficticio:** el endpoint de productos devuelve los mismos resultados con `category`; las fichas de categoría enlazan al catálogo completo en lugar de aparentar un filtrado inexistente.
+- **Dependencia externa visible:** producción no oculta indisponibilidad de la API mediante snapshots automáticos.
 
 ## API y desarrollo determinista
 
-La API puede devolver `429`, `x-vercel-mitigated: challenge` y HTML desde el servidor de Next. Aunque el endpoint funciona al abrirlo en un navegador, CORS impide consumirlo desde `localhost`.
+La API pública puede responder con HTTP `429`, contenido HTML y la cabecera `x-vercel-mitigated: challenge`. Es un **Vercel Security Checkpoint**, no una cuota ordinaria del API.
 
-Como solución de desarrollo, `scripts/development.mjs` levanta una API sólo en loopback a partir de snapshots versionados de 20 productos y 8 categorías. Este modo nunca se activa como fallback de producción. `npm run dev:live` conserva la integración y sus errores reales; `connection()` evita que Home dependa de la API durante el build.
+CORS es un problema distinto: puede impedir una llamada directa desde el navegador, pero no explica el `429` observado en solicitudes servidor-a-servidor. La aplicación consulta el catálogo desde Next.js, por lo que el bloqueo relevante es el checkpoint externo.
 
-Los snapshots permiten revisar la interfaz, pero no contienen páginas adicionales: paginación y filtros reutilizan la misma muestra. Si el acceso servidor-a-servidor fuese estable, podrían eliminarse `development/catalog-snapshots`, `scripts/development.mjs` y `dev:live`.
+`connection()` evita que las rutas dependientes del catálogo ejecuten esa llamada durante el prerender del build y la desplaza al momento de la petición. Esto permite construir la aplicación, pero no garantiza que la API vaya a aceptar la solicitud en runtime.
 
-## Calidad y testing
+Para que el desarrollo y la revisión visual sean reproducibles, `scripts/development.mjs` sirve en loopback snapshots versionados con tres páginas de productos y categorías relacionadas. Este mecanismo sólo se activa con `npm run dev`; `dev:live` y producción mantienen la integración real y hacen visibles sus fallos.
+
+## Proceso de trabajo
+
+1. Consolidación del briefing y validación del contrato real de la API.
+2. Construcción incremental de rutas, servicios y estado compartido.
+3. Comparación responsive y auditorías de accesibilidad y SEO.
+4. Pruebas de errores de red, HTML inesperado, contratos inválidos y almacenamiento.
+5. Revisión final del alcance, simplificación de tests y ejecución del quality gate.
+
+## Calidad y tests
 
 ```bash
 npm run typecheck
@@ -92,15 +112,20 @@ npm test
 npm run build
 ```
 
-El testing no fue el foco del ejercicio. Se dejó una primera cobertura básica en `tests/storefront.test.ts` para paginación, configuración, adaptación de la API, errores, precios y persistencia de favoritos. No existe todavía una suite completa de componentes, E2E, accesibilidad o regresión visual.
+`tests/storefront.test.ts` contiene 28 pruebas enfocadas en contratos con riesgo real: paginación, configuración, transporte y normalización de API, metadata, precios, búsqueda y persistencia de favoritos. Se evitaron pruebas de literales editoriales o estructura interna sin comportamiento asociado.
+
+No se añadieron dependencias de testing de componentes ni una suite E2E sólo para aumentar cobertura. Las verificaciones de lector de pantalla, Lighthouse y regresión visual siguen siendo manuales.
 
 ## Limitaciones conocidas
 
-- La disponibilidad de la integración live depende del checkpoint externo.
-- El brief original pedía catálogo y paginación también en Home; la implementación los concentra en `/products` para respetar la referencia editorial del figma recibida.
+- La integración live depende de que el checkpoint externo permita la solicitud servidor-a-servidor.
+- No existe listado filtrado por categoría porque `/products/` ignora ese parámetro. Kave Home realiza ese filtrado mediante Algolia, cuyas credenciales de búsqueda no forman parte del contrato entregado.
+- Los snapshots locales cubren tres páginas y no sustituyen una integración de producción.
 - Carrito y checkout están fuera de alcance; sus controles permanecen deshabilitados.
-- Las comprobaciones con lector de pantalla, Lighthouse y comparación visual siguen siendo manuales.
+- Falta validar la integración definitiva desde la URL desplegada en Vercel.
 
 ## Uso de IA
 
-Se utilizó IA para explorar requisitos, proponer estructura, implementar y revisar. El resultado se contrastó con el contrato de la API, los snapshots y los comandos de calidad, y cada decisión debe poder explicarse y defenderse.
+La IA se utilizó como apoyo para explorar el repositorio y el contrato externo, proponer alternativas, implementar, escribir pruebas y ejecutar auditorías sucesivas de código, accesibilidad, SEO y documentación.
+
+Las decisiones documentadas de alcance y arquitectura —server-first, promoción por reutilización, snapshots sólo para desarrollo y ausencia de fallback silencioso— se asumieron explícitamente para esta entrega. Las propuestas generadas con IA se contrastaron con el briefing, el comportamiento observado de la API y el quality gate; la selección y responsabilidad final permanecen en el candidato.

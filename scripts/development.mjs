@@ -7,7 +7,7 @@ const snapshotsDirectory = new URL(
   '../development/catalog-snapshots/',
   import.meta.url,
 )
-const [productsSnapshot, categoriesSnapshot] = await Promise.all([
+const [productPages, categoriesSnapshot] = await Promise.all([
   readFile(new URL('products.json', snapshotsDirectory), 'utf8').then(
     JSON.parse,
   ),
@@ -15,6 +15,12 @@ const [productsSnapshot, categoriesSnapshot] = await Promise.all([
     JSON.parse,
   ),
 ])
+
+const productCatalog = productPages.flatMap((page) => page.results)
+const pagesByCollection = {
+  products: productPages,
+  categories: [categoriesSnapshot],
+}
 
 function sendJson(response, status, body) {
   response.writeHead(status, { 'content-type': 'application/json' })
@@ -31,7 +37,7 @@ function searchableText(value) {
 function searchSnapshot(requestUrl) {
   const query = searchableText(requestUrl.searchParams.get('query') ?? '')
   if (!query) return []
-  return productsSnapshot.results
+  return productCatalog
     .filter((product) => searchableText(product.title).includes(query))
     .map((product) => ({
       title: product.title,
@@ -40,17 +46,23 @@ function searchSnapshot(requestUrl) {
     }))
 }
 
-function paginatedSnapshot(snapshot, requestUrl) {
+function pageLink(index, offset, pages, requestUrl) {
+  const target = ((index + offset + pages.length) % pages.length) + 1
+  const url = new URL(requestUrl)
+  url.searchParams.set('page', String(target))
+  return url.toString()
+}
+
+// Sólo hay 3 páginas de productos capturadas: la 4ª y siguientes vuelven a la
+// primera.
+function paginatedSnapshot(collection, requestUrl) {
+  const pages = pagesByCollection[collection]
   const page = Math.max(1, Number(requestUrl.searchParams.get('page')) || 1)
-  const pageCount = Math.ceil(snapshot.count / snapshot.results.length)
+  const index = (page - 1) % pages.length
   return {
-    ...snapshot,
-    previous:
-      page > 1 ? new URL(`?page=${page - 1}`, requestUrl).toString() : null,
-    next:
-      page < pageCount
-        ? new URL(`?page=${page + 1}`, requestUrl).toString()
-        : null,
+    ...pages[index],
+    previous: pageLink(index, -1, pages, requestUrl),
+    next: pageLink(index, 1, pages, requestUrl),
   }
 }
 
@@ -64,17 +76,32 @@ const server = createServer((request, response) => {
     return
   }
   if (requestUrl.pathname === '/products/') {
-    sendJson(response, 200, paginatedSnapshot(productsSnapshot, requestUrl))
+    sendJson(response, 200, paginatedSnapshot('products', requestUrl))
     return
   }
   if (requestUrl.pathname === '/categories/') {
-    sendJson(response, 200, paginatedSnapshot(categoriesSnapshot, requestUrl))
+    sendJson(response, 200, paginatedSnapshot('categories', requestUrl))
+    return
+  }
+  const categoryMatch = requestUrl.pathname.match(
+    /^\/nextjs\/categories\/([^/]+)\/$/,
+  )
+  if (categoryMatch) {
+    const slug = decodeURIComponent(categoryMatch[1])
+    const category = categoriesSnapshot.results.find(
+      (item) => item.slug === slug,
+    )
+    sendJson(
+      response,
+      category ? 200 : 404,
+      category ?? { detail: 'Not found' },
+    )
     return
   }
   const productMatch = requestUrl.pathname.match(/^\/products\/([^/]+)\/$/)
   if (productMatch) {
     const sku = decodeURIComponent(productMatch[1])
-    const product = productsSnapshot.results.find((item) => item.sku === sku)
+    const product = productCatalog.find((item) => item.sku === sku)
     sendJson(response, product ? 200 : 404, product ?? { detail: 'Not found' })
     return
   }
@@ -102,7 +129,7 @@ const next = spawn(
 )
 
 console.log(
-  `Development catalog: ${productsSnapshot.results.length} captured products and ${categoriesSnapshot.results.length} captured categories`,
+  `Development catalog: ${productCatalog.length} captured products (${productPages.length} pages) and ${categoriesSnapshot.results.length} captured categories`,
 )
 
 let stopping = false

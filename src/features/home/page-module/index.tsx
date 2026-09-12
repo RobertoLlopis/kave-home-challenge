@@ -1,16 +1,18 @@
-import Image from 'next/image'
 import Link from 'next/link'
-import { CategoryList } from '@/features/home/containers/category-list'
+import Image from 'next/image'
+import { ProductListing } from '@/containers/product-listing'
+import { CategoryList } from '@/containers/category-list'
 import { EditorialCarousel } from '@/features/home/containers/editorial-carousel'
 import { accessibility } from '@/constants/accessibility'
 import { routes } from '@/constants/routes'
 import { Button } from '@/primitives/button'
 import { editorialUrl } from '@/features/home/containers/editorial-carousel/constants'
+import { homePageHref } from './helpers'
 import { homeAssets, homeCopy } from './constants'
 import { homeStyles } from './styles'
 import type { HomePageProps } from './types'
 
-export function HomePage({ categories }: HomePageProps) {
+export function HomePage({ categories, products, page, pages }: HomePageProps) {
   return (
     <main
       id={accessibility.mainContentId}
@@ -56,6 +58,22 @@ export function HomePage({ categories }: HomePageProps) {
       <section className={homeStyles.content}>
         <h2 className={homeStyles.sectionTitle}>{homeCopy.categoriesTitle}</h2>
         <CategoryList categories={categories} />
+      </section>
+      <section className={homeStyles.content}>
+        <header className={homeStyles.productsHeader}>
+          <h2 className={homeStyles.productsTitle}>{homeCopy.productsTitle}</h2>
+          <p className={homeStyles.productsDescription}>
+            {homeCopy.productsDescription}
+          </p>
+        </header>
+        <ProductListing
+          products={products}
+          page={page}
+          pages={pages}
+          href={homePageHref}
+        />
+      </section>
+      <section className={homeStyles.content}>
         <EditorialCarousel />
       </section>
     </main>
@@ -76,6 +94,17 @@ HomePage.Loading = function HomeLoading() {
       <section className={homeStyles.content}>
         <h2 className={homeStyles.sectionTitle}>{homeCopy.categoriesTitle}</h2>
         <CategoryList.Loading />
+      </section>
+      <section className={homeStyles.content}>
+        <header className={homeStyles.productsHeader}>
+          <h2 className={homeStyles.productsTitle}>{homeCopy.productsTitle}</h2>
+          <p className={homeStyles.productsDescription}>
+            {homeCopy.productsDescription}
+          </p>
+        </header>
+        <ProductListing.Loading />
+      </section>
+      <section className={homeStyles.content}>
         <EditorialCarousel.Loading />
       </section>
     </main>

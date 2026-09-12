@@ -4,6 +4,11 @@ export type Category = {
   slug: string
   highlightImage: string | null
   description: string
+  seoTitle: string
+  seoDescription: string
+  seoIndex: string
+  openGraphImages: string[]
+  children: Category[]
 }
 export type Envelope<T> = {
   count: number

@@ -2,6 +2,7 @@ import { cache } from 'react'
 import { tryCatch } from '@/utils/try-catch'
 import {
   categoriesEndpoint,
+  categoryEndpoint,
   productEndpoint,
   productsEndpoint,
   searchEndpoint,
@@ -10,6 +11,7 @@ import { CatalogApiError } from './error'
 import {
   normalizeCategoriesEnvelope,
   normalizeProductsEnvelope,
+  normalizeRequiredCategory,
   normalizeRequiredProduct,
   normalizeSearchHits,
 } from './normalization'
@@ -22,11 +24,9 @@ async function query<T extends object>(
   return normalize(await requestCatalog(path))
 }
 
-export async function getProducts(page = 1, category?: string) {
-  const params = new URLSearchParams({ page: String(page) })
-  if (category) params.set('category', category)
+export async function getProducts(page = 1) {
   const data = await query(
-    `${productsEndpoint()}?${params}`,
+    `${productsEndpoint()}?page=${page}`,
     normalizeProductsEnvelope,
   )
   return { results: data.results, count: data.count }
@@ -55,3 +55,13 @@ export const getCategories = cache(async function getCategories() {
   const data = await query(categoriesEndpoint(), normalizeCategoriesEnvelope)
   return data.results
 })
+
+export async function getCategory(slug: string) {
+  const result = await tryCatch(
+    query(categoryEndpoint(slug), normalizeRequiredCategory),
+  )
+  if (result[0] !== null) return result[0]
+  if (result[1] instanceof CatalogApiError && result[1].status === 404)
+    return null
+  throw result[1]
+}

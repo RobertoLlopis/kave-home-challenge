@@ -8,4 +8,6 @@ export const purchaseStyles = {
   selectIcon:
     'pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 stroke-[1.5]',
   cta: 'flex-1 text-xs',
+  loadingSelect: 'h-12 w-20 shrink-0 rounded-none',
+  loadingCta: 'h-12 flex-1 rounded-none',
 } as const

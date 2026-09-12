@@ -81,12 +81,24 @@ ProductDetailPage.Loading = function ProductDetailLoading() {
     >
       <div className={productDetailStyles.layout}>
         <ProductGallery.Loading />
-        <section className={productDetailStyles.loadingPanel}>
-          <DetailTitleLoading />
+        <section className={productDetailStyles.panel}>
+          <span
+            className={productDetailStyles.panelHandle}
+            aria-hidden="true"
+          />
+          <div className={productDetailStyles.headingRow}>
+            <DetailTitleLoading />
+            <Skeleton
+              className={productDetailStyles.loadingFavorite}
+              aria-hidden="true"
+            />
+          </div>
           <DetailDescriptionLoading />
           <div className={productDetailStyles.loadingPrice}>
             <Price.Loading />
           </div>
+          <ProductPurchase.Loading />
+          <DeliveryMessage.Loading />
         </section>
       </div>
       <ServiceFooter.Loading />

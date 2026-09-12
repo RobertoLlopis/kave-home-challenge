@@ -7,7 +7,11 @@ import { categoryListConstants } from '../constants'
 import { categoryListStyles } from '../styles'
 import { useCategoryCarousel } from './hooks'
 
-export function CategoryCarousel({ children }: { children: ReactNode }) {
+export default function CategoryCarouselWrapper({
+  children,
+}: {
+  children: ReactNode
+}) {
   const { max, move, position, syncPosition, viewport } = useCategoryCarousel()
 
   return (

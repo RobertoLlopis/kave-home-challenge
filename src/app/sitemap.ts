@@ -7,7 +7,7 @@ function absoluteUrl(path: string) {
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return [routes.home, routes.products].map((path) => ({
+  return [routes.home, routes.products, routes.categories].map((path) => ({
     url: absoluteUrl(path),
   }))
 }

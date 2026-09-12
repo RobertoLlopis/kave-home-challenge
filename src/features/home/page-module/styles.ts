@@ -14,5 +14,9 @@ export const homeStyles = {
   heroActions: 'flex shrink-0 flex-wrap gap-2 md:grid md:grid-cols-2',
   content: commonStyles.contentShell,
   sectionTitle: 'mb-4 text-sm font-normal',
+  productsHeader: 'mb-8 max-w-4xl',
+  productsTitle:
+    'text-[clamp(1.75rem,4vw,3rem)] font-medium leading-none tracking-[-.05em]',
+  productsDescription: 'mt-3 text-xs leading-4 text-foreground',
   loadingHero: cn(commonStyles.skeletonLine, 'h-20 w-2/3'),
 } as const

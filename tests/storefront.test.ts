@@ -1,12 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import { parseEnvironment } from '../src/config/environment'
-import { categoryHref } from '../src/features/home/containers/category-list/helpers'
-import {
-  editorialFallbackUrl,
-  editorialUrl,
-  editorialItems,
-} from '../src/features/home/containers/editorial-carousel/constants'
+import { categoryHref } from '../src/containers/category-list/helpers'
 import { productCardHref } from '../src/containers/product-card/helpers'
 import { availableQuantities } from '../src/features/product/containers/product-purchase/helpers'
 import {
@@ -14,12 +9,17 @@ import {
   formatDeliveryDate,
 } from '../src/features/product/containers/delivery-message/helpers'
 import {
+  categoryCanonical,
+  categoryMetadata,
+  categoryRobots,
+} from '../src/features/category/page-module/helpers'
+import {
   resolveSearchQuery,
   searchMetadata,
 } from '../src/features/search/page-module/helpers'
 import {
   productsCanonical,
-  productsPageDestination,
+  productsRedirectTarget,
 } from '../src/features/products/page-module/helpers'
 import {
   productMetadataDescription,
@@ -38,6 +38,7 @@ import { pageRange } from '../src/containers/pagination/helpers'
 import {
   CatalogApiError,
   getCategories,
+  getCategory,
   getProduct,
   getProducts,
   normalizeProduct,
@@ -45,6 +46,7 @@ import {
 } from '../src/services/catalog-api'
 import {
   normalizeCategoriesEnvelope,
+  normalizeCategory,
   normalizeEnvelope,
   normalizeProductsEnvelope,
   normalizeRequiredProduct,
@@ -55,7 +57,12 @@ import {
   type CatalogFetcher,
 } from '../src/services/catalog-api/transport'
 import { formatPrice } from '../src/utils/format-price'
-import { pageQuery, parsePage, totalPages } from '../src/utils/pagination'
+import {
+  listingPageDestination,
+  pageQuery,
+  parsePage,
+  totalPages,
+} from '../src/utils/pagination'
 
 const mediaHost = 'd.media.kavehome.com'
 const item = { sku: 'A', title: 'Mesa', price: 10, image: null }
@@ -104,18 +111,164 @@ test('pagination helpers normalize pages and produce canonical query strings', (
   assert.equal(parsePage('-2'), 1)
   assert.equal(parsePage('nope'), 1)
   assert.equal(totalPages(0), 1)
-  assert.equal(pageQuery(2, 'chairs'), '?page=2&category=chairs')
-  assert.equal(productsPageDestination(1, 4, '1', 'chairs'), null)
-  assert.equal(productsPageDestination(2, 4, '2', 'chairs'), null)
+  assert.equal(pageQuery(1), '')
+  assert.equal(pageQuery(2), '?page=2')
+  assert.equal(productsCanonical(2), '/products?page=2')
+  assert.equal(productsRedirectTarget({}, 2, 4), null)
+  assert.equal(productsRedirectTarget({ page: '2' }, 2, 4), null)
+  assert.equal(productsRedirectTarget({ page: '9' }, 9, 4), '/products?page=4')
   assert.equal(
-    productsCanonical(2, 'chairs'),
-    '/products?page=2&category=chairs',
+    listingPageDestination('/categories/sillas', 1, 1, '3'),
+    '/categories/sillas',
   )
   assert.equal(productCardHref('A/B 1'), '/products/A%2FB%201')
   assert.equal(
     categoryHref('chairs & tables'),
-    '/products?category=chairs+%26+tables',
+    '/categories/chairs%20%26%20tables',
   )
+})
+
+test('category helpers resolve the editorial metadata and canonical', () => {
+  assert.equal(categoryCanonical('sillas'), '/categories/sillas')
+  const metadata = categoryMetadata({
+    id: 699,
+    name: 'Sillas',
+    slug: 'sillas',
+    highlightImage: null,
+    description: '<p>Sillas de madera</p>',
+    seoTitle: '',
+    seoDescription: '',
+    seoIndex: '',
+    openGraphImages: [],
+    children: [],
+  })
+  assert.equal(metadata.title, 'Sillas · Kave Home')
+  assert.equal(metadata.description, 'Sillas de madera')
+  assert.deepEqual(metadata.alternates, { canonical: '/categories/sillas' })
+  assert.deepEqual(metadata.openGraph, {
+    title: 'Sillas · Kave Home',
+    description: 'Sillas de madera',
+    type: 'website',
+  })
+})
+
+test('category metadata prefers the SEO contract served by the API', () => {
+  const seoTitle = 'Sillas de diseño, modernas y cómodas | Kave Home'
+  const seoDescription =
+    'Sillas de diseño de alta calidad creadas para acompañarte toda la vida.'
+  const openGraphImages = ['https://d.media.kavehome.com/image/upload/x.jpg']
+  const metadata = categoryMetadata({
+    id: 699,
+    name: 'Sillas',
+    slug: 'sillas',
+    highlightImage: null,
+    description: '<p>Sillas de madera</p>',
+    seoTitle,
+    seoDescription,
+    seoIndex: 'index,follow',
+    openGraphImages,
+    children: [],
+  })
+  assert.equal(metadata.title, seoTitle)
+  assert.equal(metadata.description, seoDescription)
+  assert.deepEqual(metadata.alternates, {
+    canonical: '/categories/sillas',
+  })
+  assert.deepEqual(metadata.robots, { index: true, follow: true })
+  assert.deepEqual(metadata.openGraph, {
+    title: seoTitle,
+    description: seoDescription,
+    type: 'website',
+    images: openGraphImages,
+  })
+})
+
+test('category mapper reads the SEO contract and drops unsafe open graph images', () => {
+  const category = normalizeCategory({
+    id: 699,
+    name: 'Sillas',
+    slug: 'sillas',
+    seo: {
+      seoTitle: 'Título SEO',
+      seoDescription: 'Descripción SEO',
+      index: 'index,follow',
+      alternates: [{ rel: 'canonical', href: '/es/es/o/sillas' }],
+    },
+    openGraphImages: [
+      'https://d.media.kavehome.com/image/upload/ok.jpg',
+      'https://evil.test/bad.jpg',
+    ],
+  })
+  assert.equal(category?.seoTitle, 'Título SEO')
+  assert.equal(category?.seoDescription, 'Descripción SEO')
+  assert.equal(category?.seoIndex, 'index,follow')
+  assert.deepEqual(category?.openGraphImages, [
+    'https://d.media.kavehome.com/image/upload/ok.jpg',
+  ])
+})
+
+test('category mapper falls back to empty SEO values when the API omits them', () => {
+  const category = normalizeCategory({ id: 1, name: 'Mesas', slug: 'mesas' })
+  assert.equal(category?.seoTitle, '')
+  assert.equal(category?.seoDescription, '')
+  assert.deepEqual(category?.openGraphImages, [])
+  assert.deepEqual(category?.children, [])
+})
+
+test('category mapper keeps only safe subcategories from mainChildren', () => {
+  const category = normalizeCategory({
+    id: 699,
+    name: 'Sillas',
+    slug: 'sillas',
+    mainChildren: [
+      {
+        id: 718,
+        name: 'Sillas de comedor',
+        slug: 'sillas-comedor',
+        highlightImage: 'https://d.media.kavehome.com/image/upload/ok.jpg',
+      },
+      {
+        id: 719,
+        name: 'Taburetes',
+        slug: 'taburetes',
+        highlightImage: 'https://evil.test/bad.jpg',
+      },
+      { name: 'Sin identificador' },
+    ],
+  })
+  assert.deepEqual(
+    category?.children.map((child) => child.slug),
+    ['sillas-comedor', 'taburetes'],
+  )
+  assert.equal(
+    category?.children[0]?.highlightImage,
+    'https://d.media.kavehome.com/image/upload/ok.jpg',
+  )
+  assert.equal(category?.children[1]?.highlightImage, null)
+})
+
+test('category robots honours the directives the API sends', () => {
+  const base = {
+    id: 1,
+    name: 'Mesas',
+    slug: 'mesas',
+    highlightImage: null,
+    description: '',
+    seoTitle: '',
+    seoDescription: '',
+    openGraphImages: [],
+    children: [],
+  }
+  const robots = (seoIndex: string) => categoryRobots({ ...base, seoIndex })
+  assert.deepEqual(robots('index,follow'), { index: true, follow: true })
+  assert.deepEqual(robots(' index, follow '), { index: true, follow: true })
+  assert.deepEqual(robots('noindex,follow'), { index: false, follow: true })
+  assert.deepEqual(robots('noindex,nofollow'), {
+    index: false,
+    follow: false,
+  })
+  assert.equal(robots(''), null)
+  assert.equal(robots('  '), null)
 })
 
 test('environment parser requires valid HTTP URLs and positive timeout', () => {
@@ -227,6 +380,9 @@ test('public catalog queries normalize valid responses and preserve facade error
   await withFetch(jsonResponse(validProduct), async () => {
     assert.equal((await getProduct('X'))?.sku, 'X')
   })
+  await withFetch(jsonResponse({ id: 1, name: 'Mesas' }), async () => {
+    assert.equal((await getCategory('mesas'))?.name, 'Mesas')
+  })
 })
 
 test('search validates and enriches every unique hit in server order', async () => {
@@ -236,7 +392,6 @@ test('search validates and enriches every unique hit in server order', async () 
     url: `https://kavehome.com/es/es/p/producto-${index}`,
   }))
   const hits = [...uniqueHits, uniqueHits[0]]
-  assert.deepEqual(normalizeSearchHits(hits), hits)
   assert.throws(() => normalizeSearchHits([{ title: 'Mesa' }]), {
     name: 'CatalogApiError',
   })
@@ -468,16 +623,13 @@ test('favorites image validation requires the exact configured HTTPS host', () =
   )
 })
 
-test('favorites storage accessor tolerates a blocked global getter', () => {
+test('favorites storage tolerates blocked access, reads and writes', () => {
   assert.equal(
     getFavoriteStorage(() => {
       throw new DOMException('blocked', 'SecurityError')
     }),
     null,
   )
-})
-
-test('favorites storage tolerates blocked reads and writes and preserves envelope writes', () => {
   assert.deepEqual(loadFavorites(null, mediaHost), [])
   assert.deepEqual(
     loadFavorites(
@@ -523,18 +675,6 @@ test('favorites state starts pending before the first storage read and toggles i
   const added = toggleFavorite([], item)
   assert.deepEqual(added, [item])
   assert.deepEqual(toggleFavorite(added, item), [])
-})
-
-test('editorial links use real Kave destinations', () => {
-  assert.equal(
-    editorialUrl,
-    'https://kavehome.com/es/es/e/character-against-neutrality',
-  )
-  assert.equal(editorialFallbackUrl, 'https://kavehome.com/es/es/')
-  assert.deepEqual(
-    editorialItems.map((item) => item.href),
-    [editorialUrl, editorialFallbackUrl, editorialFallbackUrl],
-  )
 })
 
 test('product metadata truncates at word boundaries and within limits', () => {

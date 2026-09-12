@@ -10,9 +10,9 @@ export const productDetailStyles = {
   favorite: 'static -mr-2 -mt-3 shrink-0 before:bg-transparent [&_svg]:size-4',
   title: 'text-2xl font-medium leading-tight tracking-[-0.03em] md:text-3xl',
   description: 'mt-2 text-xs font-normal leading-4',
-  price: 'mt-4 text-xl font-normal [&_strong]:font-medium',
-  loadingPanel: 'px-4 py-6 md:px-0 md:py-4',
+  price: 'mt-4 text-2xl font-normal [&_strong]:font-medium',
   loadingTitle: 'h-12 w-3/4',
-  loadingPrice: 'mt-6 h-8 w-32',
-  loadingDescription: 'mt-4 h-16 w-full',
+  loadingFavorite: 'size-4 shrink-0 rounded-full',
+  loadingPrice: 'mt-4 h-8 w-32',
+  loadingDescription: 'mt-2 h-4 w-32',
 } as const

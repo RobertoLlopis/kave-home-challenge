@@ -1,20 +1,11 @@
-import { ProductGrid } from '@/containers/product-grid'
-import { Pagination } from '@/containers/pagination'
-import { catalog } from '@/constants/catalog'
+import { ProductListing } from '@/containers/product-listing'
 import { accessibility } from '@/constants/accessibility'
 import { productsPageHref } from './helpers'
 import { productsCopy } from './constants'
 import { productsStyles } from './styles'
 import type { ProductsPageProps } from './types'
 
-export function ProductsPage({
-  products,
-  page,
-  category,
-  heading,
-  description,
-  pages,
-}: ProductsPageProps) {
+export function ProductsPage({ products, page, pages }: ProductsPageProps) {
   return (
     <main
       id={accessibility.mainContentId}
@@ -22,14 +13,14 @@ export function ProductsPage({
       className={productsStyles.content}
     >
       <header className={productsStyles.header}>
-        <h1 className={productsStyles.title}>{heading}</h1>
-        <p className={productsStyles.description}>{description}</p>
+        <h1 className={productsStyles.title}>{productsCopy.heading}</h1>
+        <p className={productsStyles.description}>{productsCopy.description}</p>
       </header>
-      <ProductGrid products={products} />
-      <Pagination
+      <ProductListing
+        products={products}
         page={page}
         pages={pages}
-        href={(next) => productsPageHref(next, category)}
+        href={productsPageHref}
       />
     </main>
   )
@@ -46,9 +37,9 @@ ProductsPage.Loading = function ProductsLoading() {
     >
       <header className={productsStyles.header}>
         <h1 className={productsStyles.title}>{productsCopy.heading}</h1>
-        <p className={productsStyles.description}>{productsCopy.title}</p>
+        <p className={productsStyles.description}>{productsCopy.description}</p>
       </header>
-      <ProductGrid.Loading count={catalog.pageSize} />
+      <ProductListing.Loading />
     </main>
   )
 }

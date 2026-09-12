@@ -1,6 +1,7 @@
 import { ChevronLeft, ChevronRight, MoreHorizontal } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@/primitives/button'
+import { Skeleton } from '@/primitives/skeleton'
 import { cn } from '@/utils/classnames'
 import { paginationLabels, pageStatus } from './constants'
 import { pageRange } from './helpers'
@@ -113,5 +114,17 @@ export function Pagination({ page, pages, href }: PaginationProps) {
         </span>
       </div>
     </nav>
+  )
+}
+
+Pagination.Loading = function PaginationLoading() {
+  return (
+    <div className={paginationStyles.root} aria-hidden="true">
+      <div className={paginationStyles.inner}>
+        {Array.from({ length: 5 }, (_, index) => (
+          <Skeleton className={paginationStyles.control} key={index} />
+        ))}
+      </div>
+    </div>
   )
 }

@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { Skeleton } from '@/primitives/skeleton'
 import { categoryImageConstants } from './constants'
 import { categoryImageStyles } from './styles'
 import type { CategoryImageProps } from './types'
@@ -15,4 +16,8 @@ export default function CategoryImage({ category }: CategoryImageProps) {
       className={categoryImageStyles.image}
     />
   )
+}
+
+CategoryImage.Loading = function CategoryImageLoading() {
+  return <Skeleton className={categoryImageStyles.image} />
 }

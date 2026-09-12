@@ -1,30 +1,23 @@
 import type { Metadata } from 'next'
 import { routes } from '@/constants/routes'
-import { pageQuery, parsePage } from '@/utils/pagination'
+import {
+  listingPageDestination,
+  pageQuery,
+  parsePage,
+} from '@/utils/pagination'
 import { productsCopy } from './constants'
 import type { ProductsPageMetadata, ProductsQuery } from './types'
 
 export function resolveProductsQuery(query: ProductsQuery) {
-  return { page: parsePage(query.page), category: query.category }
+  return { page: parsePage(query.page) }
 }
 
-export function productsPageDestination(
-  page: number,
-  pages: number,
-  rawPage?: string,
-  category?: string,
-): string | null {
-  if (rawPage === undefined || (rawPage === String(page) && page <= pages))
-    return null
-  return `${routes.products}${pageQuery(Math.min(page, pages), category)}`
+export function productsPageHref(page: number) {
+  return `${routes.products}${pageQuery(page)}`
 }
 
-export function productsPageHref(page: number, category?: string) {
-  return `${routes.products}${pageQuery(page, category)}`
-}
-
-export function productsCanonical(page: number, category?: string) {
-  return productsPageHref(page, category)
+export function productsCanonical(page: number) {
+  return productsPageHref(page)
 }
 
 export function productsRedirectTarget(
@@ -32,34 +25,15 @@ export function productsRedirectTarget(
   page: number,
   pages: number,
 ) {
-  return productsPageDestination(page, pages, query.page, query.category)
+  return listingPageDestination(routes.products, page, pages, query.page)
 }
 
-export function productsHeading(category?: string) {
-  if (!category) return productsCopy.heading
-  return category
-    .split('-')
-    .filter(Boolean)
-    .map((word) => `${word[0]?.toUpperCase() ?? ''}${word.slice(1)}`)
-    .join(' ')
-}
-
-export function productsMetadata(
-  page: number,
-  category?: string,
-  categoryName?: string,
-  categoryDescription?: string,
-): ProductsPageMetadata {
-  const heading = categoryName ?? productsHeading(category)
+export function productsMetadata(page: number): ProductsPageMetadata {
   return {
-    title: `${heading} · Kave Home`,
-    description: categoryDescription ?? productsCopy.description,
+    title: productsCopy.title,
+    description: productsCopy.description,
     alternates: {
-      canonical: productsCanonical(page, category),
+      canonical: productsCanonical(page),
     } satisfies Metadata['alternates'],
   }
-}
-
-export function productsDescription() {
-  return productsCopy.description
 }

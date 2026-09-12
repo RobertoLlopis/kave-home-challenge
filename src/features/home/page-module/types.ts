@@ -1,5 +1,11 @@
 import type { Metadata } from 'next'
-import type { Category } from '@/services/catalog-api'
+import type { Category, Product } from '@/services/catalog-api'
 
-export type HomePageProps = { categories: Category[] }
+export type HomeRouteProps = { searchParams: Promise<{ page?: string }> }
+export type HomePageProps = {
+  categories: Category[]
+  products: Product[]
+  page: number
+  pages: number
+}
 export type HomePageMetadata = Metadata

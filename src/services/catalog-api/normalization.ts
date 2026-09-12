@@ -131,6 +131,10 @@ export function normalizeCategory(value: unknown): Category | null {
   const category = value as Record<string, unknown>
   if (typeof category.id !== 'number' || typeof category.name !== 'string')
     return null
+  const seo =
+    category.seo && typeof category.seo === 'object'
+      ? (category.seo as Record<string, unknown>)
+      : {}
   return {
     id: category.id,
     name: category.name,
@@ -141,6 +145,20 @@ export function normalizeCategory(value: unknown): Category | null {
     highlightImage: safeImage(category.highlightImage),
     description:
       typeof category.description === 'string' ? category.description : '',
+    seoTitle: typeof seo.seoTitle === 'string' ? seo.seoTitle : '',
+    seoDescription:
+      typeof seo.seoDescription === 'string' ? seo.seoDescription : '',
+    seoIndex: typeof seo.index === 'string' ? seo.index : '',
+    openGraphImages: Array.isArray(category.openGraphImages)
+      ? category.openGraphImages
+          .map(safeImage)
+          .filter((item): item is string => item !== null)
+      : [],
+    children: Array.isArray(category.mainChildren)
+      ? category.mainChildren
+          .map(normalizeCategory)
+          .filter((item): item is Category => item !== null)
+      : [],
   }
 }
 
@@ -163,6 +181,10 @@ export function normalizeCategoriesEnvelope(
 
 export function normalizeRequiredProduct(value: unknown): Product {
   return requiredProduct(value)
+}
+
+export function normalizeRequiredCategory(value: unknown): Category {
+  return requiredCategory(value)
 }
 
 export function normalizeSearchHits(value: unknown): SearchHit[] {

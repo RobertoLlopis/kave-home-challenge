@@ -1,14 +1,15 @@
-import { Metadata } from 'next'
-import { routes } from '@/constants/routes'
+import { resolveHomeQuery } from './helpers'
 import { homeCopy } from './constants'
-import type { HomePageMetadata } from './types'
+import type { HomeRouteProps, HomePageMetadata } from './types'
 
-export function generateHomeMetadata(): HomePageMetadata {
+export async function generateHomeMetadata({
+  searchParams,
+}: HomeRouteProps): Promise<HomePageMetadata> {
+  const query = await searchParams
+  resolveHomeQuery(query)
   return {
     title: homeCopy.title,
     description: homeCopy.description,
-    alternates: {
-      canonical: routes.home,
-    } satisfies Metadata['alternates'],
+    alternates: { canonical: '/' },
   }
 }

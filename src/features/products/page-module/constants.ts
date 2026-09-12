@@ -1,7 +1,3 @@
-export const productsConstants = {
-  metadataDescriptionLimit: 160,
-} as const
-
 export const productsCopy = {
   title: 'Productos · Kave Home',
   heading: 'Productos',

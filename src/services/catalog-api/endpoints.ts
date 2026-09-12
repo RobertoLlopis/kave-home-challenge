@@ -22,3 +22,9 @@ export function productEndpoint(sku: string) {
 export function categoriesEndpoint() {
   return endpoint(catalogApiConstants.categoriesPath)
 }
+
+export function categoryEndpoint(slug: string) {
+  return endpoint(
+    `nextjs/${catalogApiConstants.categoriesPath}${encodeURIComponent(slug)}/`,
+  )
+}

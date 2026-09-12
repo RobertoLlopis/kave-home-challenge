@@ -14,4 +14,5 @@ export const productCardStyles = {
   addToCart:
     'size-6 shrink-0 items-start bg-transparent p-0 text-foreground disabled:opacity-100 md:hidden [&_svg]:-translate-y-px [&_svg]:size-3.5 [&_svg]:stroke-[1.5]',
   loadingTitle: cn(commonStyles.skeletonLine, 'mb-2 h-4 w-3/4'),
+  price: commonStyles.spanSemibold,
 } as const
