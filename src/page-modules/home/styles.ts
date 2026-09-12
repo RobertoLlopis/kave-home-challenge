@@ -2,7 +2,7 @@ import { commonStyles } from '@/styles/common'
 import { cn } from '@/utils/classnames'
 
 export const homeStyles = {
-  hero: 'relative isolate flex min-h-[calc(100dvh-var(--header-height))] w-full items-end overflow-hidden bg-[#f1f0ed] px-5 py-10 text-white sm:px-10 lg:px-16',
+  hero: 'relative isolate mx-auto flex min-h-[calc(100dvh-var(--header-height))] max-w-screen-2xl items-end overflow-hidden bg-[#f1f0ed] px-5 py-10 text-white sm:px-10 lg:px-16',
   heroImage: 'z-0 object-cover',
   heroOverlay: 'absolute inset-0 z-10 bg-black/25',
   heroContent:
@@ -12,7 +12,7 @@ export const homeStyles = {
   heroTitle:
     'text-[clamp(2rem,4vw,3.5rem)] font-normal leading-[.98] tracking-[-.05em]',
   heroActions: 'flex shrink-0 flex-wrap gap-2 md:grid md:grid-cols-2',
-  content: cn(commonStyles.contentShell, 'max-w-none'),
+  content: commonStyles.contentShell,
   sectionTitle: 'mb-4 text-sm font-normal',
   loadingHero: cn(commonStyles.skeletonLine, 'h-20 w-2/3'),
 } as const

@@ -29,7 +29,7 @@
   --primary-foreground: #fff;
   --ring: #353530;
   --favorite: #fa0038;
-  --header-height: 2.25rem;
+  --header-height: 2.5rem;
 }
 
 @layer base {
