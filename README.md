@@ -2,6 +2,8 @@
 
 Storefront responsive construido con Next.js 16, React 19, TypeScript y Tailwind CSS 4. Consume el catálogo público de Kave Home, permite explorar productos y categorías y conserva favoritos en el navegador.
 
+[Ver despliegue en Vercel](https://kave-home-challenge.vercel.app)
+
 ## Vista rápida
 
 Las capturas se generaron sobre el modo local determinista incluido en el proyecto.
@@ -122,7 +124,7 @@ No se añadieron dependencias de testing de componentes ni una suite E2E sólo p
 - No existe listado filtrado por categoría porque `/products/` ignora ese parámetro. Kave Home realiza ese filtrado mediante Algolia, cuyas credenciales de búsqueda no forman parte del contrato entregado.
 - Los snapshots locales cubren tres páginas y no sustituyen una integración de producción.
 - Carrito y checkout están fuera de alcance; sus controles permanecen deshabilitados.
-- Falta validar la integración definitiva desde la URL desplegada en Vercel.
+- La validación en Vercel confirma la limitación: las rutas dependientes del catálogo muestran el estado de error cuando el checkpoint rechaza la solicitud; `/favorites` y las demás superficies estáticas funcionan normalmente.
 
 ## Uso de IA
 
