@@ -29,7 +29,7 @@ Las capturas se generaron sobre el modo local determinista incluido en el proyec
   </tr>
 </table>
 
-<img src="docs/readme/products-page-3-mobile.png" alt="Listado de productos en móvil, página 3 con paginación" width="100%">
+<img src="docs/readme/products-page-3-mobile.png" alt="Listado de productos en móvil, página 3 con paginación" width="20%">
 
 ## Puesta en marcha
 
