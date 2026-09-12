@@ -56,6 +56,7 @@ import {
   requestCatalog,
   type CatalogFetcher,
 } from '../src/services/catalog-api/transport'
+import { snapshotCatalog } from '../src/services/catalog-api/snapshot-fallback'
 import { formatPrice } from '../src/utils/format-price'
 import {
   listingPageDestination,
@@ -282,10 +283,20 @@ test('environment parser requires valid HTTP URLs and positive timeout', () => {
   assert.equal(parsed.apiBaseUrl.href, valid.KAVE_HOME_API_BASE_URL)
   assert.equal(parsed.siteUrl.href, `${valid.KAVE_HOME_SITE_URL}/`)
   assert.equal(parsed.apiTimeoutMs, 8000)
+  assert.equal(parsed.snapshotFallback, false)
+  assert.equal(
+    parseEnvironment({ ...valid, KAVE_HOME_SNAPSHOT_FALLBACK: 'true' })
+      .snapshotFallback,
+    true,
+  )
   assert.throws(
     () =>
       parseEnvironment({ ...valid, KAVE_HOME_SITE_URL: 'file:///tmp/site' }),
     /absolute HTTP\(S\) URL/,
+  )
+  assert.throws(
+    () => parseEnvironment({ ...valid, KAVE_HOME_SNAPSHOT_FALLBACK: 'yes' }),
+    /must be true or false/,
   )
   assert.throws(
     () => parseEnvironment({ ...valid, KAVE_HOME_API_TIMEOUT_MS: '0' }),
@@ -426,6 +437,31 @@ test('getProduct maps a genuine 404 to absence', async () => {
   await withFetch(jsonResponse({}, 404), async () => {
     assert.equal(await getProduct('missing'), null)
   })
+})
+
+test('snapshot fallback resolves captured catalog endpoints', () => {
+  const products = snapshotCatalog(
+    'https://kavehome.com/es/es/api/v2/products/?page=1',
+  ) as { results: Array<{ sku: string }> }
+  assert.equal(products.results[0]?.sku, 'S81321ZF38')
+
+  const product = snapshotCatalog(
+    'https://kavehome.com/es/es/api/v2/products/S81321ZF38/',
+  ) as { sku: string }
+  assert.equal(product.sku, 'S81321ZF38')
+
+  const search = snapshotCatalog(
+    'https://kavehome.com/es/es/api/v2/products/search/?query=sofa',
+  ) as Array<{ sku: string }>
+  assert.equal(
+    search.some((hit) => hit.sku === 'S81321ZF38'),
+    true,
+  )
+
+  const category = snapshotCatalog(
+    'https://kavehome.com/es/es/api/v2/nextjs/categories/sillas/',
+  ) as { slug: string }
+  assert.equal(category.slug, 'sillas')
 })
 
 test('catalog transport preserves HTTP failures and status codes', async () => {

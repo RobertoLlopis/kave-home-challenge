@@ -2,6 +2,7 @@ import { environment } from '@/config/environment/runtime'
 import { tryCatch } from '@/utils/try-catch'
 import { catalogApiConstants } from './constants'
 import { CatalogApiError } from './error'
+import { snapshotCatalog } from './snapshot-fallback'
 import type { CatalogRequestOptions } from './types'
 
 export type { CatalogFetcher, CatalogRequestOptions } from './types'
@@ -10,6 +11,14 @@ function requestFailure(error: unknown): CatalogApiError {
   if (error instanceof DOMException && error.name === 'TimeoutError')
     return new CatalogApiError(catalogApiConstants.messages.timeout, 'timeout')
   return new CatalogApiError(catalogApiConstants.messages.network, 'network')
+}
+
+function fallbackOrThrow(path: string, error: CatalogApiError): unknown {
+  if (!environment.snapshotFallback || error.status === 404) throw error
+  const snapshot = snapshotCatalog(path)
+  if (snapshot === undefined) throw error
+  console.warn(`[catalog-api] Usando snapshot de contingencia para ${path}`)
+  return snapshot
 }
 
 export async function requestCatalog(
@@ -26,24 +35,30 @@ export async function requestCatalog(
   )
 
   if (requestError !== null || response === null)
-    throw requestFailure(requestError)
+    return fallbackOrThrow(path, requestFailure(requestError))
   if (!response.ok)
-    throw new CatalogApiError(
-      catalogApiConstants.messages.http(response.status),
-      'http',
-      response.status,
+    return fallbackOrThrow(
+      path,
+      new CatalogApiError(
+        catalogApiConstants.messages.http(response.status),
+        'http',
+        response.status,
+      ),
     )
   if (!response.headers.get('content-type')?.includes('application/json'))
-    throw new CatalogApiError(
-      catalogApiConstants.messages.contentType,
-      'content-type',
+    return fallbackOrThrow(
+      path,
+      new CatalogApiError(
+        catalogApiConstants.messages.contentType,
+        'content-type',
+      ),
     )
 
   const [payload, parseError] = await tryCatch(response.json())
   if (parseError !== null)
-    throw new CatalogApiError(
-      catalogApiConstants.messages.invalidJson,
-      'contract',
+    return fallbackOrThrow(
+      path,
+      new CatalogApiError(catalogApiConstants.messages.invalidJson, 'contract'),
     )
   return payload
 }

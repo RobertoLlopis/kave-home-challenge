@@ -5,6 +5,7 @@ type Environment = {
   siteUrl: URL
   mediaHost: string
   apiTimeoutMs: number
+  snapshotFallback: boolean
 }
 
 type EnvironmentValues = Record<string, string | undefined>
@@ -32,6 +33,13 @@ function positiveInteger(name: string, value: string | undefined) {
   return parsed
 }
 
+function optionalBoolean(name: string, value: string | undefined) {
+  if (value === undefined) return false
+  if (value === 'true') return true
+  if (value === 'false') return false
+  throw new Error(`${name} must be true or false`)
+}
+
 export function parseEnvironment(env: EnvironmentValues): Environment {
   const mediaHost = required('KAVE_HOME_MEDIA_HOST', env.KAVE_HOME_MEDIA_HOST)
   if (!/^[a-z0-9.-]+$/i.test(mediaHost))
@@ -44,6 +52,10 @@ export function parseEnvironment(env: EnvironmentValues): Environment {
     apiTimeoutMs: positiveInteger(
       'KAVE_HOME_API_TIMEOUT_MS',
       env.KAVE_HOME_API_TIMEOUT_MS,
+    ),
+    snapshotFallback: optionalBoolean(
+      'KAVE_HOME_SNAPSHOT_FALLBACK',
+      env.KAVE_HOME_SNAPSHOT_FALLBACK,
     ),
   }
 }

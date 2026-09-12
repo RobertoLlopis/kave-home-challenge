@@ -13,13 +13,23 @@ Las capturas se generaron sobre el modo local determinista incluido en el proyec
 <table>
   <tr>
     <td width="50%">
-      <img src="docs/readme/home-categories.jpg" alt="Categorías destacadas de la página de inicio">
+      <img src="docs/readme/home-mobile-categories.png" alt="Carrusel de categorías de la página de inicio en móvil">
+    </td>
+    <td width="50%">
+      <img src="docs/readme/favorites-mobile.png" alt="Página de favoritos en móvil">
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <img src="docs/readme/search-input-mobile.png" alt="Buscador abierto en móvil">
     </td>
     <td width="50%">
       <img src="docs/readme/product-detail.jpg" alt="Detalle de producto con galería, precio y favorito">
     </td>
   </tr>
 </table>
+
+<img src="docs/readme/products-page-3-mobile.png" alt="Listado de productos en móvil, página 3 con paginación" width="100%">
 
 ## Puesta en marcha
 
@@ -31,7 +41,7 @@ npm run dev
 
 - `npm run dev`: Next.js con snapshots locales reproducibles.
 - `npm run dev:live`: integración directa con la API pública y sus errores reales.
-- `npm run build && npm start`: comportamiento de producción, sin fallback oculto a snapshots.
+- `npm run build && npm start`: comportamiento de producción; intenta la API real y permite activar un fallback explícito a snapshots.
 
 Rutas disponibles: `/`, `/products`, `/products/[sku]`, `/categories`, `/categories/[slug]`, `/favorites` y `/search?q=...`.
 
@@ -82,7 +92,7 @@ La misma regla se aplica a los estados de carga. Un `loading.tsx` compone el `.L
 - **Contrato defensivo:** se validan HTTP, tipo de contenido, JSON, URLs, imágenes y registros antes de llegar a la UI.
 - **Paginación por URL:** compartir o recargar una página conserva el estado y produce una canonical estable.
 - **Favoritos resilientes:** el esquema de almacenamiento está versionado y tolera datos corruptos, acceso bloqueado y errores de cuota.
-- **Dependencia externa visible:** producción no oculta indisponibilidad de la API mediante snapshots automáticos.
+- **Fallback explícito:** producción muestra el error de la API por defecto; `KAVE_HOME_SNAPSHOT_FALLBACK=true` permite servir snapshots cuando el proveedor falla.
 
 ## API y desarrollo determinista
 
@@ -97,9 +107,11 @@ Los modos quedan separados deliberadamente:
 
 - `npm run dev` usa los snapshots y ofrece un entorno local reproducible.
 - `npm run dev:live` consulta la API pública para comprobar la integración y mostrar sus errores reales.
-- Producción consulta siempre la API pública; nunca cambia silenciosamente a datos locales.
+- Producción consulta primero la API pública. Si se configura `KAVE_HOME_SNAPSHOT_FALLBACK=true` en las variables de entorno de Vercel, usa los snapshots cuando la respuesta falla; si no, conserva el error real.
 
-La contrapartida es que el modo determinista sólo contiene tres páginas de productos y una selección de categorías, por lo que sirve para desarrollo y evaluación visual, no como sustituto del servicio real. El despliegue actual en Vercel confirma el mismo bloqueo servidor-a-servidor y muestra el estado de error previsto en las rutas que necesitan catálogo.
+Para activar la contingencia en Vercel, añade `KAVE_HOME_SNAPSHOT_FALLBACK=true` en **Project Settings → Environment Variables** y vuelve a desplegar. Para desactivarla, elimina la variable o usa `false`.
+
+La contrapartida es que el modo determinista sólo contiene tres páginas de productos y una selección de categorías, por lo que sirve para desarrollo, evaluación visual y contingencia, no como sustituto del servicio real. El fallback se registra en los logs con el prefijo `[catalog-api]` y los datos pueden quedar desactualizados.
 
 ## Proceso de trabajo
 
@@ -129,7 +141,7 @@ No se añadieron dependencias de testing de componentes ni una suite E2E sólo p
 - La integración live depende de que el checkpoint externo permita la solicitud servidor-a-servidor.
 - Los snapshots locales cubren tres páginas y no sustituyen una integración de producción.
 - Carrito y checkout están fuera de alcance; sus controles permanecen deshabilitados.
-- En el despliegue actual las rutas dependientes del catálogo muestran el estado de error cuando el checkpoint rechaza la solicitud; `/favorites` y las superficies estáticas funcionan normalmente.
+- Sin `KAVE_HOME_SNAPSHOT_FALLBACK=true`, las rutas dependientes del catálogo muestran el estado de error cuando el checkpoint rechaza la solicitud; `/favorites` y las superficies estáticas funcionan normalmente.
 
 ## Uso de IA
 
@@ -138,7 +150,7 @@ La IA formó parte del proceso de desarrollo, pero no se utilizó como un genera
 Algunas decisiones se refinaron precisamente a partir de ese diálogo:
 
 - mantener la obtención de datos en servidor en vez de trasladarla al cliente para esquivar el problema de la API;
-- separar desarrollo determinista, integración live y producción, descartando un fallback silencioso;
+- separar desarrollo determinista, integración live y producción, manteniendo el fallback de producción desactivado por defecto y explícito mediante configuración;
 - evolucionar desde componentes ligados a Home hacia la regla fractal de promoción sólo cuando apareció reutilización real;
 - mantener carrito y checkout deshabilitados antes que simular comportamiento no solicitado;
 - reducir los tests a contratos y casos de fallo con impacto, en vez de medir cobertura por cantidad;
