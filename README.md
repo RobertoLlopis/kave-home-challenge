@@ -73,11 +73,12 @@ src/
   config/         entorno validado
   constants/      contratos compartidos
   utils/          funciones puras reutilizables
+  test-support/   fixtures y dobles compartidos por los tests
 ```
 
 Una pieza nace junto a la feature que la necesita. Sólo se promociona al ancestro común más cercano cuando aparece reutilización real:
 
-- Home y Products usan `ProductListing`, por lo que vive en `src/containers/product-listing`.
+- Home y Products usan `ProductListing`, por lo que vive en `src/containers/product-listing`. Además de componer grid y paginación, concentra la política de página que ambas rutas comparten: normalización del parámetro, total de páginas, enlaces, canonical y destino de redirección.
 - Home y las dos superficies de categorías usan `CategoryList`, promovido a `src/containers/category-list`.
 - `FavoriteButton` y `FavoritesProvider` son compartidos por varias rutas y viven fuera de una feature concreta.
 - `Button`, `Card`, `Input` y `Skeleton` no conocen el dominio y permanecen en `primitives`.
@@ -111,7 +112,9 @@ Los modos quedan separados deliberadamente:
 
 Para activar la contingencia en Vercel, añade `KAVE_HOME_SNAPSHOT_FALLBACK=true` en **Project Settings → Environment Variables** y vuelve a desplegar. Para desactivarla, elimina la variable o usa `false`.
 
-La contrapartida es que el modo determinista sólo contiene tres páginas de productos y una selección de categorías, por lo que sirve para desarrollo, evaluación visual y contingencia, no como sustituto del servicio real. El fallback se registra en los logs con el prefijo `[catalog-api]` y los datos pueden quedar desactualizados.
+La contrapartida es que el modo determinista sólo contiene tres páginas de productos y las fichas enriquecidas de doce categorías, por lo que sirve para desarrollo, evaluación visual y contingencia, no como sustituto del servicio real. El fallback se registra en los logs con el prefijo `[catalog-api]` y los datos pueden quedar desactualizados.
+
+Ambos modos leen los mismos snapshots mediante `development/catalog-snapshots`, que resuelve búsqueda, paginación, producto y categoría. El servidor local de `scripts/development.mjs` sólo adapta petición y respuesta; la contingencia sólo decide cuándo usarlos, de modo que una regla corregida en un modo no puede quedar desincronizada en el otro.
 
 ## Proceso de trabajo
 
@@ -132,14 +135,32 @@ npm test
 npm run build
 ```
 
-`tests/storefront.test.ts` contiene 28 pruebas enfocadas en contratos con riesgo real: paginación, configuración, transporte y normalización de API, metadata, precios, búsqueda y persistencia de favoritos. Se evitaron pruebas de literales editoriales o estructura interna sin comportamiento asociado.
+Los tests siguen la misma regla de co-localización que el código: cada suite vive junto al módulo que cubre, y comparte con él el nombre.
+
+```text
+src/
+  config/environment/index.test.ts
+  containers/{category-list,pagination,product-card}/helpers.test.ts
+  containers/product-listing/logic.test.ts
+  features/category/page-module/helpers.test.ts
+  features/product/page-module/helpers.test.ts
+  features/product/containers/delivery-message/helpers.test.ts
+  features/product/containers/product-purchase/helpers.test.ts
+  features/search/page-module/helpers.test.ts
+  providers/favorites/helpers.test.ts
+  services/catalog-api/{queries,normalization,transport,snapshot-fallback}.test.ts
+  utils/{format-price,pagination}/index.test.ts
+  test-support/   utilidades compartidas entre suites, nunca importadas por la app
+```
+
+Son 34 pruebas enfocadas en contratos con riesgo real: paginación y canonical de los listados, configuración, transporte y normalización de API, snapshots compartidos, metadata, precios, búsqueda y persistencia de favoritos. Se evitaron pruebas de literales editoriales o estructura interna sin comportamiento asociado.
 
 No se añadieron dependencias de testing de componentes ni una suite E2E sólo para aumentar cobertura. Las verificaciones de lector de pantalla, Lighthouse y regresión visual siguen siendo manuales.
 
 ## Limitaciones conocidas
 
 - La integración live depende de que el checkpoint externo permita la solicitud servidor-a-servidor.
-- Los snapshots locales cubren tres páginas y no sustituyen una integración de producción.
+- Los snapshots locales cubren tres páginas de productos y doce fichas de categoría, y no sustituyen una integración de producción.
 - Carrito y checkout están fuera de alcance; sus controles permanecen deshabilitados.
 - Sin `KAVE_HOME_SNAPSHOT_FALLBACK=true`, las rutas dependientes del catálogo muestran el estado de error cuando el checkpoint rechaza la solicitud; `/favorites` y las superficies estáticas funcionan normalmente.
 

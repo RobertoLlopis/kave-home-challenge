@@ -1,9 +1,7 @@
 import { redirect } from 'next/navigation'
 
-import { getProducts } from '@/services/catalog-api'
-import { totalPages } from '@/utils/pagination'
-
-import { productsRedirectTarget, resolveProductsQuery } from './helpers'
+import { routes } from '@/constants/routes'
+import { loadProductListing } from '@/containers/product-listing'
 
 import { ProductsPage } from './index'
 
@@ -11,10 +9,7 @@ import type { ProductsRouteProps } from './types'
 
 export async function renderProductsPage({ searchParams }: ProductsRouteProps) {
   const query = await searchParams
-  const { page } = resolveProductsQuery(query)
-  const data = await getProducts(page)
-  const pages = totalPages(data.count)
-  const destination = productsRedirectTarget(query, page, pages)
-  if (destination) redirect(destination)
-  return <ProductsPage products={data.results} page={page} pages={pages} />
+  const result = await loadProductListing(routes.products, query.page)
+  if (result.destination) redirect(result.destination)
+  return <ProductsPage listing={result.listing} />
 }

@@ -10,12 +10,11 @@ import { editorialUrl } from '@/features/home/containers/editorial-carousel/cons
 import { Button } from '@/primitives/button'
 
 import { homeAssets, homeCopy } from './constants'
-import { homePageHref } from './helpers'
 import { homeStyles } from './styles'
 
 import type { HomePageProps } from './types'
 
-export function HomePage({ categories, products, page, pages }: HomePageProps) {
+export function HomePage({ categories, listing }: HomePageProps) {
   return (
     <main
       id={accessibility.mainContentId}
@@ -69,12 +68,7 @@ export function HomePage({ categories, products, page, pages }: HomePageProps) {
             {homeCopy.productsDescription}
           </p>
         </header>
-        <ProductListing
-          products={products}
-          page={page}
-          pages={pages}
-          href={homePageHref}
-        />
+        <ProductListing {...listing} />
       </section>
       <section className={homeStyles.content}>
         <EditorialCarousel />

@@ -1,9 +1,9 @@
+import { redirect } from 'next/navigation'
 import { connection } from 'next/server'
 
-import { getCategories, getProducts } from '@/services/catalog-api'
-import { totalPages } from '@/utils/pagination'
-
-import { resolveHomeQuery } from './helpers'
+import { routes } from '@/constants/routes'
+import { loadProductListing } from '@/containers/product-listing'
+import { getCategories } from '@/services/catalog-api'
 
 import { HomePage } from './index'
 
@@ -12,17 +12,10 @@ import type { HomeRouteProps } from './types'
 export async function renderHomePage({ searchParams }: HomeRouteProps) {
   await connection()
   const query = await searchParams
-  const { page } = resolveHomeQuery(query)
-  const [categories, data] = await Promise.all([
+  const [categories, result] = await Promise.all([
     getCategories(),
-    getProducts(page),
+    loadProductListing(routes.home, query.page),
   ])
-  return (
-    <HomePage
-      categories={categories}
-      products={data.results}
-      page={page}
-      pages={totalPages(data.count)}
-    />
-  )
+  if (result.destination) redirect(result.destination)
+  return <HomePage categories={categories} listing={result.listing} />
 }
