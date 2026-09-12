@@ -1,4 +1,1 @@
-import FavoritesPage from '@/page-modules/favorites'
-export default function FavoritesRoute() {
-  return <FavoritesPage />
-}
+export { default } from '@/features/favorites/page-module/render'

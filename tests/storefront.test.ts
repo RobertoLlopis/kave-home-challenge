@@ -1,21 +1,30 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import { parseEnvironment } from '../src/config/environment'
-import { categoryHref } from '../src/containers/category-list/helpers'
+import { categoryHref } from '../src/features/home/containers/category-list/helpers'
+import {
+  editorialFallbackUrl,
+  editorialUrl,
+  editorialItems,
+} from '../src/features/home/containers/editorial-carousel/constants'
 import { productCardHref } from '../src/containers/product-card/helpers'
-import { availableQuantities } from '../src/containers/product-purchase/helpers'
+import { availableQuantities } from '../src/features/product/containers/product-purchase/helpers'
 import {
   deliveryDateRange,
   formatDeliveryDate,
-} from '../src/containers/service-footer/helpers'
+} from '../src/features/product/containers/delivery-message/helpers'
 import {
   resolveSearchQuery,
   searchMetadata,
-} from '../src/page-modules/search/helpers'
+} from '../src/features/search/page-module/helpers'
 import {
   productsCanonical,
   productsPageDestination,
-} from '../src/page-modules/products/helpers'
+} from '../src/features/products/page-module/helpers'
+import {
+  productMetadataDescription,
+  productMetadataTitle,
+} from '../src/features/product/page-module/helpers'
 import {
   getFavoriteStorage,
   initialFavoritesState,
@@ -24,8 +33,8 @@ import {
   readFavorites,
   saveFavorites,
   toggleFavorite,
-} from '../src/providers/favorites-provider'
-import { pageRange } from '../src/primitives/pagination/helpers'
+} from '../src/providers/favorites/helpers'
+import { pageRange } from '../src/containers/pagination/helpers'
 import {
   CatalogApiError,
   getCategories,
@@ -514,4 +523,36 @@ test('favorites state starts pending before the first storage read and toggles i
   const added = toggleFavorite([], item)
   assert.deepEqual(added, [item])
   assert.deepEqual(toggleFavorite(added, item), [])
+})
+
+test('editorial links use real Kave destinations', () => {
+  assert.equal(
+    editorialUrl,
+    'https://kavehome.com/es/es/e/character-against-neutrality',
+  )
+  assert.equal(editorialFallbackUrl, 'https://kavehome.com/es/es/')
+  assert.deepEqual(
+    editorialItems.map((item) => item.href),
+    [editorialUrl, editorialFallbackUrl, editorialFallbackUrl],
+  )
+})
+
+test('product metadata truncates at word boundaries and within limits', () => {
+  const value =
+    'Una descripción de producto suficientemente larga para comprobar que nunca termina a mitad de palabra y que mantiene un fragmento natural para los resultados de búsqueda.'
+  const description = productMetadataDescription(value)
+  const title = productMetadataTitle(
+    'Producto con un nombre extraordinariamente largo para buscadores',
+  )
+  const titleWithBrand = `${title} · Kave Home`
+
+  assert.match(description, /…$/)
+  assert.ok(description.length <= 160)
+  assert.equal(value.at(description.length - 1), ' ')
+  assert.equal(
+    productMetadataDescription('<p>Descripción\n\n breve</p>'),
+    'Descripción breve',
+  )
+  assert.match(title, /…$/)
+  assert.ok(titleWithBrand.length <= 60)
 })

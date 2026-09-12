@@ -1,2 +1,2 @@
-export { generateSearchMetadata as generateMetadata } from '@/page-modules/search/metadata'
-export { renderSearchPage as default } from '@/page-modules/search/render'
+export { generateSearchMetadata as generateMetadata } from '@/features/search/page-module/metadata'
+export { renderSearchPage as default } from '@/features/search/page-module/render'

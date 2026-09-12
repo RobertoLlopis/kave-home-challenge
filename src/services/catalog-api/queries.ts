@@ -1,3 +1,4 @@
+import { cache } from 'react'
 import { tryCatch } from '@/utils/try-catch'
 import {
   categoriesEndpoint,
@@ -50,7 +51,7 @@ export async function getProduct(sku: string) {
   throw result[1]
 }
 
-export async function getCategories() {
+export const getCategories = cache(async function getCategories() {
   const data = await query(categoriesEndpoint(), normalizeCategoriesEnvelope)
   return data.results
-}
+})

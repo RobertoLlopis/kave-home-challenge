@@ -1,4 +1,5 @@
-import { ProductsPage } from '@/page-modules/products'
+import { ProductsPage } from '@/features/products/page-module'
+
 export default function Loading() {
   return <ProductsPage.Loading />
 }

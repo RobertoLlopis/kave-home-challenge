@@ -5,4 +5,5 @@ export const commonStyles = {
     'text-[clamp(2rem,5vw,4rem)] font-medium leading-none tracking-[-.05em]',
   mutedText: 'text-sm text-muted-foreground',
   skeletonLine: 'h-4 rounded-md bg-muted',
+  spanSemibold: 'font-semibold',
 } as const

@@ -1,4 +1,4 @@
-import { SearchPage } from '@/page-modules/search'
+import { SearchPage } from '@/features/search/page-module'
 
 export default function Loading() {
   return <SearchPage.Loading />

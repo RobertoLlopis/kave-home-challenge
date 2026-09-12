@@ -1,13 +1,13 @@
 import Link from 'next/link'
 import { Plus } from 'lucide-react'
-import { Price } from '@/primitives/price'
+import { Price } from '@/containers/price'
 import { Button } from '@/primitives/button'
-import { FavoriteButton } from '@/primitives/button/favorite-button'
 import { Card } from '@/primitives/card'
-import { ProductImage } from '@/primitives/product-image'
+import { ProductImage } from '@/containers/product-image'
 import { productCardConstants } from './constants'
 import { productCardHref } from './helpers'
 import { productCardStyles } from './styles'
+import { FavoriteButton } from '@/containers/favorite-button'
 import type { ProductCardProps } from './types'
 
 export function ProductCard({ product, eagerImage = false }: ProductCardProps) {

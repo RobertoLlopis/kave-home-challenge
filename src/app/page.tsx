@@ -1,2 +1,2 @@
-export { generateHomeMetadata as generateMetadata } from '@/page-modules/home/metadata'
-export { renderHomePage as default } from '@/page-modules/home/render'
+export { generateHomeMetadata as generateMetadata } from '@/features/home/page-module/metadata'
+export { renderHomePage as default } from '@/features/home/page-module/render'

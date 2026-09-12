@@ -1,2 +1,2 @@
-export { generateProductMetadata as generateMetadata } from '@/page-modules/product-detail/metadata'
-export { renderProductPage as default } from '@/page-modules/product-detail/render'
+export { generateProductMetadata as generateMetadata } from '@/features/product/page-module/metadata'
+export { renderProductPage as default } from '@/features/product/page-module/render'
