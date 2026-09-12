@@ -1,12 +1,15 @@
-import type { Metadata } from 'next'
 import { Poppins } from 'next/font/google'
-import { SiteShell } from '@/layouts/site-shell'
+
 import { environment } from '@/config/environment/runtime'
-import { cn } from '@/utils/classnames'
+import { SiteShell } from '@/layouts/site-shell'
 import { FavoritesProvider } from '@/providers/favorites'
+import { cn } from '@/utils/classnames'
+
 import { rootLayoutConstants } from './constants'
 import { rootLayoutStyles } from './styles'
+
 import type { RootLayoutProps } from './types'
+import type { Metadata } from 'next'
 
 const poppins = Poppins({
   variable: '--font-poppins',

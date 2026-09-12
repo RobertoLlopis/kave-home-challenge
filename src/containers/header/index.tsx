@@ -1,10 +1,12 @@
-import Link from 'next/link'
 import { Heart } from 'lucide-react'
-import { SearchControl } from '@/containers/search-control'
+import Link from 'next/link'
+
 import { accessibility } from '@/constants/accessibility'
 import { routes } from '@/constants/routes'
-import { headerStyles } from './styles'
+import { SearchControl } from '@/containers/search-control'
+
 import { headerConstants } from './constants'
+import { headerStyles } from './styles'
 
 export default function Header() {
   return (

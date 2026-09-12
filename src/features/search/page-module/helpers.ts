@@ -1,5 +1,7 @@
 import { routes } from '@/constants/routes'
+
 import { searchCopy } from './constants'
+
 import type { SearchPageMetadata, SearchQuery } from './types'
 
 export function resolveSearchQuery(query: SearchQuery) {

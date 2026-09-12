@@ -1,8 +1,11 @@
 import Image from 'next/image'
+
 import { Skeleton } from '@/primitives/skeleton'
 import { cn } from '@/utils/classnames'
+
 import { productImageConstants } from './constants'
 import { productImageLoadingStyles, productImageStyles } from './styles'
+
 import type { ProductImageProps } from './types'
 
 function sourceFor(src: string | null) {

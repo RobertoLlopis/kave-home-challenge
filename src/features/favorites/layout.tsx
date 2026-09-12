@@ -1,5 +1,6 @@
-import type { ReactNode } from 'react'
 import { favoritesMetadata } from './page-module/metadata'
+
+import type { ReactNode } from 'react'
 
 export const metadata = favoritesMetadata
 

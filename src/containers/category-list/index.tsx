@@ -1,7 +1,8 @@
-import { categoryListConstants } from './constants'
-import CategoryGrid from './category-grid'
 import CategoryCarouselList from './category-carousel-list'
+import CategoryGrid from './category-grid'
+import { categoryListConstants } from './constants'
 import { categoryListStyles } from './styles'
+
 import type { CategoryListProps } from './types'
 
 export function CategoryList({

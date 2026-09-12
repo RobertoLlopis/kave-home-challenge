@@ -1,10 +1,12 @@
-import type { Product } from '@/services/catalog-api'
 import { ProductDetailImage } from '@/containers/product-image'
+
 import { productGalleryConstants } from './constants'
-import { productImages } from './helpers'
-import { galleryStyles } from './styles'
-import { MobileProductGallery } from './mobile-product-gallery'
 import { DesktopProductGallery } from './desktop-product-gallery'
+import { productImages } from './helpers'
+import { MobileProductGallery } from './mobile-product-gallery'
+import { galleryStyles } from './styles'
+
+import type { Product } from '@/services/catalog-api'
 
 export function ProductGallery({ product }: { product: Product }) {
   const images = productImages(product)

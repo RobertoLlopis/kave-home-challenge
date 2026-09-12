@@ -1,8 +1,12 @@
 import { connection } from 'next/server'
+
 import { getCategories, getProducts } from '@/services/catalog-api'
 import { totalPages } from '@/utils/pagination'
-import { HomePage } from './index'
+
 import { resolveHomeQuery } from './helpers'
+
+import { HomePage } from './index'
+
 import type { HomeRouteProps } from './types'
 
 export async function renderHomePage({ searchParams }: HomeRouteProps) {

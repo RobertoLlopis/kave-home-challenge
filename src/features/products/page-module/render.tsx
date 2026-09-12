@@ -1,8 +1,12 @@
 import { redirect } from 'next/navigation'
+
 import { getProducts } from '@/services/catalog-api'
 import { totalPages } from '@/utils/pagination'
+
 import { productsRedirectTarget, resolveProductsQuery } from './helpers'
+
 import { ProductsPage } from './index'
+
 import type { ProductsRouteProps } from './types'
 
 export async function renderProductsPage({ searchParams }: ProductsRouteProps) {

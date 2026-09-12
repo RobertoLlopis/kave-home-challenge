@@ -1,5 +1,7 @@
 import { tryCatchSync } from '@/utils/try-catch'
+
 import { favoritesConstants } from './constants'
+
 import type {
   FavoriteItem,
   FavoriteStorage,

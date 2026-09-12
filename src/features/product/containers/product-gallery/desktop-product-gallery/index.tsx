@@ -1,10 +1,12 @@
 'use client'
 
-import { galleryStyles } from '../styles'
-import { desktopGalleryStyles } from './styles'
-import type { ProductGalleryImageProps } from '../types'
+import GalleryImage from '@/features/product/containers/product-gallery/gallery-image'
+import { galleryStyles } from '@/features/product/containers/product-gallery/styles'
+
 import { useHorizontalWheelScroll } from './hooks'
-import GalleryImage from '../gallery-image'
+import { desktopGalleryStyles } from './styles'
+
+import type { ProductGalleryImageProps } from '@/features/product/containers/product-gallery/types'
 
 export function DesktopProductGallery({
   images,

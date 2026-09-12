@@ -1,5 +1,5 @@
-import { MobileEditorialRotator } from './mobile-editorial-rotator'
 import { DesktopEditorialRow } from './desktop-editorial-row'
+import { MobileEditorialRotator } from './mobile-editorial-rotator'
 import { editorialStyles } from './styles'
 
 export function EditorialCarousel() {

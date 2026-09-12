@@ -1,14 +1,17 @@
 'use client'
 import Link from 'next/link'
-import type { FavoritesViewProps } from './types'
+
 import { accessibility } from '@/constants/accessibility'
 import { routes } from '@/constants/routes'
 import { FavoritesList } from '@/features/favorites/containers/list'
 import { Button } from '@/primitives/button'
 import { useFavorites } from '@/providers/favorites'
-import { favoriteProduct } from './helpers'
+
 import { favoritesCopy } from './constants'
+import { favoriteProduct } from './helpers'
 import { favoritesStyles } from './styles'
+
+import type { FavoritesViewProps } from './types'
 
 export function FavoritesView({ loading }: FavoritesViewProps) {
   const { items, pending } = useFavorites()

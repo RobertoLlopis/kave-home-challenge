@@ -1,4 +1,5 @@
 import { parsePage } from '@/utils/pagination'
+
 import type { ProductsQuery } from '@/features/products/page-module/types'
 
 export function resolveHomeQuery(query: ProductsQuery) {

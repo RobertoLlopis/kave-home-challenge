@@ -1,5 +1,5 @@
-import type { Metadata } from 'next'
 import type { Product } from '@/services/catalog-api'
+import type { Metadata } from 'next'
 
 export type SearchQuery = { q?: string | string[] }
 export type SearchRouteProps = { searchParams: Promise<SearchQuery> }

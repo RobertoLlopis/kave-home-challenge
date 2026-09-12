@@ -1,4 +1,4 @@
-import { tryCatchSync } from '../../utils/try-catch/index'
+import { tryCatchSync } from '@/utils/try-catch'
 
 type Environment = {
   apiBaseUrl: URL

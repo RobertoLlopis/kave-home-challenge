@@ -1,7 +1,9 @@
 import { environment } from '@/config/environment/runtime'
 import { tryCatchSync } from '@/utils/try-catch'
+
 import { catalogApiConstants } from './constants'
 import { CatalogApiError } from './error'
+
 import type { Category, Envelope, Product, SearchHit } from './types'
 
 const validAmount = (value: unknown): value is number =>

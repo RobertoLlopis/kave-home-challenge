@@ -1,6 +1,9 @@
 import { searchProducts } from '@/services/catalog-api'
+
 import { resolveSearchQuery } from './helpers'
+
 import { SearchPage } from './index'
+
 import type { SearchRouteProps } from './types'
 
 export async function renderSearchPage({ searchParams }: SearchRouteProps) {

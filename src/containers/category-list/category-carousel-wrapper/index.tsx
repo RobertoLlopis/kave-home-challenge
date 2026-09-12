@@ -1,11 +1,14 @@
 'use client'
 
 import { ArrowLeft, ArrowRight } from 'lucide-react'
-import type { ReactNode } from 'react'
+
+import { categoryListConstants } from '@/containers/category-list/constants'
+import { categoryListStyles } from '@/containers/category-list/styles'
 import { Button } from '@/primitives/button'
-import { categoryListConstants } from '../constants'
-import { categoryListStyles } from '../styles'
+
 import { useCategoryCarousel } from './hooks'
+
+import type { ReactNode } from 'react'
 
 export default function CategoryCarouselWrapper({
   children,

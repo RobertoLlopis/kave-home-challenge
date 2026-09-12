@@ -1,6 +1,8 @@
 import Link from 'next/link'
-import { cn } from '@/utils/classnames'
+
 import { commonStyles } from '@/styles/common'
+import { cn } from '@/utils/classnames'
+
 import { serviceFooterConstants } from './constants'
 import { serviceFooterStyles } from './styles'
 

@@ -1,7 +1,11 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { editorialConstants, editorialItems } from '../constants'
+
+import {
+  editorialConstants,
+  editorialItems,
+} from '@/features/home/containers/editorial-carousel/constants'
 
 export function useEditorialRotator() {
   const [index, setIndex] = useState(0)

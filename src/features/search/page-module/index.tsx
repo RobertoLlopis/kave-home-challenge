@@ -1,8 +1,10 @@
-import { ProductGrid } from '@/containers/product-grid'
 import { accessibility } from '@/constants/accessibility'
+import { ProductGrid } from '@/containers/product-grid'
+
 import { searchConstants, searchCopy } from './constants'
 import { searchDescription, searchHeading } from './helpers'
 import { searchStyles } from './styles'
+
 import type { SearchPageProps } from './types'
 
 export function SearchPage({ query, products }: SearchPageProps) {

@@ -1,30 +1,32 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { parseEnvironment } from '../src/config/environment'
-import { categoryHref } from '../src/containers/category-list/helpers'
-import { productCardHref } from '../src/containers/product-card/helpers'
-import { availableQuantities } from '../src/features/product/containers/product-purchase/helpers'
-import {
-  deliveryDateRange,
-  formatDeliveryDate,
-} from '../src/features/product/containers/delivery-message/helpers'
+
+import { parseEnvironment } from '@/config/environment'
+import { categoryHref } from '@/containers/category-list/helpers'
+import { pageRange } from '@/containers/pagination/helpers'
+import { productCardHref } from '@/containers/product-card/helpers'
 import {
   categoryCanonical,
   categoryMetadata,
   categoryRobots,
-} from '../src/features/category/page-module/helpers'
+} from '@/features/category/page-module/helpers'
 import {
-  resolveSearchQuery,
-  searchMetadata,
-} from '../src/features/search/page-module/helpers'
-import {
-  productsCanonical,
-  productsRedirectTarget,
-} from '../src/features/products/page-module/helpers'
+  deliveryDateRange,
+  formatDeliveryDate,
+} from '@/features/product/containers/delivery-message/helpers'
+import { availableQuantities } from '@/features/product/containers/product-purchase/helpers'
 import {
   productMetadataDescription,
   productMetadataTitle,
-} from '../src/features/product/page-module/helpers'
+} from '@/features/product/page-module/helpers'
+import {
+  productsCanonical,
+  productsRedirectTarget,
+} from '@/features/products/page-module/helpers'
+import {
+  resolveSearchQuery,
+  searchMetadata,
+} from '@/features/search/page-module/helpers'
 import {
   getFavoriteStorage,
   initialFavoritesState,
@@ -33,8 +35,7 @@ import {
   readFavorites,
   saveFavorites,
   toggleFavorite,
-} from '../src/providers/favorites/helpers'
-import { pageRange } from '../src/containers/pagination/helpers'
+} from '@/providers/favorites/helpers'
 import {
   CatalogApiError,
   getCategories,
@@ -43,7 +44,7 @@ import {
   getProducts,
   normalizeProduct,
   searchProducts,
-} from '../src/services/catalog-api'
+} from '@/services/catalog-api'
 import {
   normalizeCategoriesEnvelope,
   normalizeCategory,
@@ -51,19 +52,19 @@ import {
   normalizeProductsEnvelope,
   normalizeRequiredProduct,
   normalizeSearchHits,
-} from '../src/services/catalog-api/normalization'
+} from '@/services/catalog-api/normalization'
+import { snapshotCatalog } from '@/services/catalog-api/snapshot-fallback'
 import {
   requestCatalog,
   type CatalogFetcher,
-} from '../src/services/catalog-api/transport'
-import { snapshotCatalog } from '../src/services/catalog-api/snapshot-fallback'
-import { formatPrice } from '../src/utils/format-price'
+} from '@/services/catalog-api/transport'
+import { formatPrice } from '@/utils/format-price'
 import {
   listingPageDestination,
   pageQuery,
   parsePage,
   totalPages,
-} from '../src/utils/pagination'
+} from '@/utils/pagination'
 
 const mediaHost = 'd.media.kavehome.com'
 const item = { sku: 'A', title: 'Mesa', price: 10, image: null }

@@ -1,10 +1,13 @@
 'use client'
 import { Heart } from 'lucide-react'
-import { useFavorites } from '@/providers/favorites'
+
 import { Button } from '@/primitives/button'
+import { useFavorites } from '@/providers/favorites'
 import { cn } from '@/utils/classnames'
+
 import { favoriteLabels } from './constants'
 import { favoriteButtonStyles, favoriteIconStyles } from './styles'
+
 import type { FavoriteButtonProps, FavoriteMarkProps } from './types'
 
 function FavoriteMark({ active }: FavoriteMarkProps) {

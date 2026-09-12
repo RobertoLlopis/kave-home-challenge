@@ -1,10 +1,13 @@
 import { cache } from 'react'
+
 import { getCategory } from '@/services/catalog-api'
+
 import {
   categoryMetadata,
   categoryNotFoundMetadata,
   resolveCategoryParams,
 } from './helpers'
+
 import type { CategoryPageMetadata, CategoryRouteProps } from './types'
 
 const cachedCategory = cache(getCategory)

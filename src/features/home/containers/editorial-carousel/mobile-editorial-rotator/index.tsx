@@ -2,10 +2,15 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
+
+import {
+  editorialConstants,
+  editorialItems,
+} from '@/features/home/containers/editorial-carousel/constants'
+import { editorialStyles } from '@/features/home/containers/editorial-carousel/styles'
 import { Button } from '@/primitives/button'
 import { cn } from '@/utils/classnames'
-import { editorialConstants, editorialItems } from '../constants'
-import { editorialStyles } from '../styles'
+
 import { useEditorialRotator } from './hooks'
 
 export function MobileEditorialRotator() {

@@ -1,8 +1,10 @@
 'use client'
 import { accessibility } from '@/constants/accessibility'
 import { Button } from '@/primitives/button'
-import { errorStyles } from './styles'
+
 import { errorCopy } from './constants'
+import { errorStyles } from './styles'
+
 import type { ErrorPageProps } from './types'
 
 export default function ErrorPage({ reset }: ErrorPageProps) {

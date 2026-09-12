@@ -1,6 +1,7 @@
-import type { MetadataRoute } from 'next'
 import { environment } from '@/config/environment/runtime'
 import { routes } from '@/constants/routes'
+
+import type { MetadataRoute } from 'next'
 
 function absoluteUrl(path: string) {
   return new URL(path, environment.siteUrl).toString()

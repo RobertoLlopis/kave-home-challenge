@@ -1,15 +1,18 @@
-import Link from 'next/link'
 import Image from 'next/image'
-import { ProductListing } from '@/containers/product-listing'
-import { CategoryList } from '@/containers/category-list'
-import { EditorialCarousel } from '@/features/home/containers/editorial-carousel'
+import Link from 'next/link'
+
 import { accessibility } from '@/constants/accessibility'
 import { routes } from '@/constants/routes'
-import { Button } from '@/primitives/button'
+import { CategoryList } from '@/containers/category-list'
+import { ProductListing } from '@/containers/product-listing'
+import { EditorialCarousel } from '@/features/home/containers/editorial-carousel'
 import { editorialUrl } from '@/features/home/containers/editorial-carousel/constants'
-import { homePageHref } from './helpers'
+import { Button } from '@/primitives/button'
+
 import { homeAssets, homeCopy } from './constants'
+import { homePageHref } from './helpers'
 import { homeStyles } from './styles'
+
 import type { HomePageProps } from './types'
 
 export function HomePage({ categories, products, page, pages }: HomePageProps) {

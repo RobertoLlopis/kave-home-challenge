@@ -1,5 +1,7 @@
 import { connection } from 'next/server'
+
 import { getCategories } from '@/services/catalog-api'
+
 import { CategoriesPage } from './index'
 
 export async function renderCategoriesPage() {

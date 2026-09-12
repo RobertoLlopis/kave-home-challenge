@@ -1,8 +1,12 @@
-import { cache } from 'react'
 import { notFound } from 'next/navigation'
+import { cache } from 'react'
+
 import { getCategory } from '@/services/catalog-api'
+
 import { resolveCategoryParams } from './helpers'
+
 import { CategoryPage } from './index'
+
 import type { CategoryRouteProps } from './types'
 
 const cachedCategory = cache(getCategory)

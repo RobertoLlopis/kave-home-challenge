@@ -1,7 +1,9 @@
-import { CategoryList } from '@/containers/category-list'
 import { accessibility } from '@/constants/accessibility'
+import { CategoryList } from '@/containers/category-list'
+
 import { categoriesCopy } from './constants'
 import { categoriesStyles } from './styles'
+
 import type { CategoriesPageProps } from './types'
 
 export function CategoriesPage({ categories }: CategoriesPageProps) {

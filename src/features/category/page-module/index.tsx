@@ -1,12 +1,15 @@
 import Link from 'next/link'
-import { CategoryList } from '@/containers/category-list'
-import { Skeleton } from '@/primitives/skeleton'
-import { Button } from '@/primitives/button'
+
 import { accessibility } from '@/constants/accessibility'
 import { routes } from '@/constants/routes'
+import { CategoryList } from '@/containers/category-list'
+import { Button } from '@/primitives/button'
+import { Skeleton } from '@/primitives/skeleton'
+
 import { categoryConstants } from './constants'
 import { categoryDescription } from './helpers'
 import { categoryStyles } from './styles'
+
 import type { CategoryPageProps } from './types'
 
 export function CategoryPage({ category }: CategoryPageProps) {

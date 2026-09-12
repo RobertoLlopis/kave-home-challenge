@@ -1,7 +1,8 @@
 'use client'
-import { productGalleryConstants } from '../constants'
-import GalleryImage from '../gallery-image'
-import { ProductGalleryImageProps } from '../types'
+import { productGalleryConstants } from '@/features/product/containers/product-gallery/constants'
+import GalleryImage from '@/features/product/containers/product-gallery/gallery-image'
+import { ProductGalleryImageProps } from '@/features/product/containers/product-gallery/types'
+
 import { useInfiniteGalleryScroll } from './hooks'
 import { mobileGalleryStyles } from './styles'
 

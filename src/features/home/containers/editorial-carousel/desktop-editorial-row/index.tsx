@@ -1,7 +1,8 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { editorialItems } from '../constants'
-import { editorialStyles } from '../styles'
+
+import { editorialItems } from '@/features/home/containers/editorial-carousel/constants'
+import { editorialStyles } from '@/features/home/containers/editorial-carousel/styles'
 
 export function DesktopEditorialRow() {
   return editorialItems.map((item, index) => (

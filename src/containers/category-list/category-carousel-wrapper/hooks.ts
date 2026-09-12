@@ -1,7 +1,8 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { categoryListConstants } from '../constants'
+
+import { categoryListConstants } from '@/containers/category-list/constants'
 
 export function useCategoryCarousel() {
   const viewport = useRef<HTMLDivElement>(null)

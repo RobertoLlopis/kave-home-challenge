@@ -1,11 +1,14 @@
 import { ChevronLeft, ChevronRight, MoreHorizontal } from 'lucide-react'
 import Link from 'next/link'
+
 import { Button } from '@/primitives/button'
 import { Skeleton } from '@/primitives/skeleton'
 import { cn } from '@/utils/classnames'
+
 import { paginationLabels, pageStatus } from './constants'
 import { pageRange } from './helpers'
 import { paginationStyles } from './styles'
+
 import type {
   PaginationLinkProps,
   PaginationNextProps,

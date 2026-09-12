@@ -1,4 +1,5 @@
 import { resolveProductsQuery, productsMetadata } from './helpers'
+
 import type { ProductsRouteProps, ProductsPageMetadata } from './types'
 
 export async function generateProductsMetadata({

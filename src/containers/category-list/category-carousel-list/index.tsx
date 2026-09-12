@@ -1,11 +1,14 @@
 import Link from 'next/link'
+
+import CategoryCarouselWrapper from '@/containers/category-list/category-carousel-wrapper'
+import CategoryImage from '@/containers/category-list/category-image'
+import { categoryHref } from '@/containers/category-list/helpers'
+import { categoryListStyles } from '@/containers/category-list/styles'
 import { Skeleton } from '@/primitives/skeleton'
-import { categoryHref } from '../helpers'
-import CategoryImage from '../category-image'
-import CategoryCarouselWrapper from '../category-carousel-wrapper'
-import type { CategoryListProps } from '../types'
-import { categoryListStyles } from '../styles'
+
 import { categoryCarouselListStyles } from './styles'
+
+import type { CategoryListProps } from '@/containers/category-list/types'
 
 export default function CategoryCarouselList({
   categories,

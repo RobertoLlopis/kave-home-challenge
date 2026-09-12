@@ -1,5 +1,6 @@
-import type { Metadata } from 'next'
 import { favoritesCopy } from './constants'
+
+import type { Metadata } from 'next'
 
 export const favoritesMetadata: Metadata = {
   title: `${favoritesCopy.title} · Kave Home`,

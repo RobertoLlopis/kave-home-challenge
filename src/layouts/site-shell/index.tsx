@@ -1,7 +1,9 @@
 import { accessibility } from '@/constants/accessibility'
-import { shellStyles } from './styles'
-import type { SiteShellProps } from './types'
 import Header from '@/containers/header'
+
+import { shellStyles } from './styles'
+
+import type { SiteShellProps } from './types'
 
 export function SiteShell({ children }: SiteShellProps) {
   return (

@@ -1,6 +1,8 @@
 import { ProductCard } from '@/containers/product-card'
+
 import { productGridConstants } from './constants'
 import { productGridStyles } from './styles'
+
 import type { ProductGridLoadingProps, ProductGridProps } from './types'
 
 export function ProductGrid({ products }: ProductGridProps) {

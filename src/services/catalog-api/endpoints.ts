@@ -1,4 +1,5 @@
 import { environment } from '@/config/environment/runtime'
+
 import { catalogApiConstants } from './constants'
 
 const endpoint = (path: string) =>

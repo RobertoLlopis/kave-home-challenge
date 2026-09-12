@@ -3,10 +3,12 @@
 import { Drawer } from '@base-ui/react/drawer'
 import { Search, X } from 'lucide-react'
 import { useCallback, useState } from 'react'
+
 import { routes } from '@/constants/routes'
 import { Button } from '@/primitives/button'
 import { Input } from '@/primitives/input'
 import { cn } from '@/utils/classnames'
+
 import { searchControlConstants } from './constants'
 import { useDesktopSearchDisclosure, useSearchNavigation } from './hooks'
 import { searchControlStyles } from './styles'

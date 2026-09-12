@@ -1,8 +1,10 @@
-import type { Metadata } from 'next'
-import type { Product } from '@/services/catalog-api'
 import { plainText, truncateAtWord } from '@/utils/plain-text'
+
 import { productDetailConstants } from './constants'
+
 import type { ProductPageMetadata, ProductQuery } from './types'
+import type { Product } from '@/services/catalog-api'
+import type { Metadata } from 'next'
 
 export function resolveProductQuery(query: ProductQuery) {
   return { sku: query.sku }

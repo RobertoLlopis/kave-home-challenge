@@ -1,4 +1,5 @@
 import { resolveSearchQuery, searchMetadata } from './helpers'
+
 import type { SearchRouteProps } from './types'
 
 export async function generateSearchMetadata({

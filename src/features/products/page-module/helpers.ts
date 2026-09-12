@@ -1,12 +1,14 @@
-import type { Metadata } from 'next'
 import { routes } from '@/constants/routes'
 import {
   listingPageDestination,
   pageQuery,
   parsePage,
 } from '@/utils/pagination'
+
 import { productsCopy } from './constants'
+
 import type { ProductsPageMetadata, ProductsQuery } from './types'
+import type { Metadata } from 'next'
 
 export function resolveProductsQuery(query: ProductsQuery) {
   return { page: parsePage(query.page) }

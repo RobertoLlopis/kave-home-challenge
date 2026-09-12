@@ -1,10 +1,13 @@
 import { cache } from 'react'
+
 import { getProduct } from '@/services/catalog-api'
+
 import {
   productMetadata,
   productNotFoundMetadata,
   resolveProductQuery,
 } from './helpers'
+
 import type { ProductPageMetadata, ProductRouteProps } from './types'
 
 const cachedProduct = cache(getProduct)

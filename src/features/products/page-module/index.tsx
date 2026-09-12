@@ -1,8 +1,10 @@
-import { ProductListing } from '@/containers/product-listing'
 import { accessibility } from '@/constants/accessibility'
-import { productsPageHref } from './helpers'
+import { ProductListing } from '@/containers/product-listing'
+
 import { productsCopy } from './constants'
+import { productsPageHref } from './helpers'
 import { productsStyles } from './styles'
+
 import type { ProductsPageProps } from './types'
 
 export function ProductsPage({ products, page, pages }: ProductsPageProps) {

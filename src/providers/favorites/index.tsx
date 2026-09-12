@@ -1,8 +1,10 @@
 'use client'
 
 import { createContext, useContext } from 'react'
+
 import { favoritesConstants } from './constants'
 import { useFavoritesState } from './hooks'
+
 import type { FavoritesContextValue, FavoritesProviderProps } from './types'
 export type { FavoriteItem } from './types'
 export {

@@ -1,7 +1,9 @@
-import { formatPrice } from '@/utils/format-price'
 import { Skeleton } from '@/primitives/skeleton'
 import { cn } from '@/utils/classnames'
+import { formatPrice } from '@/utils/format-price'
+
 import { priceStyles } from './styles'
+
 import type { PreviousPartProps, PreviousPriceProps, PriceProps } from './types'
 
 function PreviousPrice({ value }: PreviousPriceProps) {

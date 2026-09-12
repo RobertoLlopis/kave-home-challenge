@@ -1,6 +1,7 @@
-import { ProductGrid } from '@/containers/product-grid'
-import { Pagination } from '@/containers/pagination'
 import { catalog } from '@/constants/catalog'
+import { Pagination } from '@/containers/pagination'
+import { ProductGrid } from '@/containers/product-grid'
+
 import type { ProductListingProps } from './types'
 
 export function ProductListing({

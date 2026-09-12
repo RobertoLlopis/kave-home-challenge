@@ -1,4 +1,5 @@
 import { catalogApiConstants } from './constants'
+
 import type { CatalogErrorKind } from './types'
 
 export class CatalogApiError extends Error {

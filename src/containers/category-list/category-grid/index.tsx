@@ -1,10 +1,13 @@
 import Link from 'next/link'
+
+import CategoryImage from '@/containers/category-list/category-image'
+import { categoryHref } from '@/containers/category-list/helpers'
+import { categoryListStyles } from '@/containers/category-list/styles'
 import { Skeleton } from '@/primitives/skeleton'
-import { categoryHref } from '../helpers'
-import CategoryImage from '../category-image'
-import type { CategoryListProps } from '../types'
-import { categoryListStyles } from '../styles'
+
 import { categoryGridStyles } from './styles'
+
+import type { CategoryListProps } from '@/containers/category-list/types'
 
 export default function CategoryGrid({ categories }: CategoryListProps) {
   return (

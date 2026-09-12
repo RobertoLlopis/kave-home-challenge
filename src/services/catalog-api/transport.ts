@@ -1,8 +1,10 @@
 import { environment } from '@/config/environment/runtime'
 import { tryCatch } from '@/utils/try-catch'
+
 import { catalogApiConstants } from './constants'
 import { CatalogApiError } from './error'
 import { snapshotCatalog } from './snapshot-fallback'
+
 import type { CatalogRequestOptions } from './types'
 
 export type { CatalogFetcher, CatalogRequestOptions } from './types'

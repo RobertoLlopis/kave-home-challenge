@@ -1,9 +1,12 @@
 import { Truck } from 'lucide-react'
+
 import { Skeleton } from '@/primitives/skeleton'
 import { commonStyles } from '@/styles/common'
+
 import { deliveryMessageConstants } from './constants'
 import { deliveryDateRange, formatDeliveryDate } from './helpers'
 import { deliveryMessageStyles } from './styles'
+
 import type { DeliveryMessageProps } from './types'
 
 export function DeliveryMessage({ now = new Date() }: DeliveryMessageProps) {

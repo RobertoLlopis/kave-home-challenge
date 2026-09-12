@@ -1,13 +1,15 @@
-import { Price } from '@/containers/price'
-import { Skeleton } from '@/primitives/skeleton'
-import { ServiceFooter } from '@/features/product/containers/service-footer'
 import { accessibility } from '@/constants/accessibility'
+import { FavoriteButton } from '@/containers/favorite-button'
+import { Price } from '@/containers/price'
+import { DeliveryMessage } from '@/features/product/containers/delivery-message'
 import { ProductGallery } from '@/features/product/containers/product-gallery'
 import { ProductPurchase } from '@/features/product/containers/product-purchase'
-import { DeliveryMessage } from '@/features/product/containers/delivery-message'
-import { FavoriteButton } from '@/containers/favorite-button'
+import { ServiceFooter } from '@/features/product/containers/service-footer'
+import { Skeleton } from '@/primitives/skeleton'
+
 import { productDetailConstants } from './constants'
 import { productDetailStyles } from './styles'
+
 import type { ProductDetailPageProps } from './types'
 
 export function ProductDetailPage({ product }: ProductDetailPageProps) {

@@ -2,9 +2,12 @@
 
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import type { FocusEvent, FormEvent, KeyboardEvent } from 'react'
+
 import { routes } from '@/constants/routes'
+
 import { searchControlConstants } from './constants'
+
+import type { FocusEvent, FormEvent, KeyboardEvent } from 'react'
 
 export function useDesktopSearchDisclosure() {
   const [open, setOpen] = useState(false)

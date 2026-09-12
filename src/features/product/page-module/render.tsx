@@ -1,8 +1,12 @@
-import { cache } from 'react'
 import { notFound } from 'next/navigation'
+import { cache } from 'react'
+
 import { getProduct } from '@/services/catalog-api'
+
 import { resolveProductQuery } from './helpers'
+
 import { ProductDetailPage } from './index'
+
 import type { ProductRouteProps } from './types'
 
 const cachedProduct = cache(getProduct)

@@ -1,4 +1,5 @@
 import { Product } from '@/services/catalog-api/types'
+
 import type { FavoriteItem } from '@/providers/favorites'
 
 export function favoriteProduct(item: FavoriteItem): Product {

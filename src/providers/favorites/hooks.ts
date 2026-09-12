@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+
 import {
   getFavoriteStorage,
   initialFavoritesState,
@@ -8,6 +9,7 @@ import {
   saveFavorites,
   toggleFavorite,
 } from './helpers'
+
 import type { FavoriteItem } from './types'
 
 export function useFavoritesState(mediaHost: string) {

@@ -1,5 +1,6 @@
-import { resolveHomeQuery } from './helpers'
 import { homeCopy } from './constants'
+import { resolveHomeQuery } from './helpers'
+
 import type { HomeRouteProps, HomePageMetadata } from './types'
 
 export async function generateHomeMetadata({

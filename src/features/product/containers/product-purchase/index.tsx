@@ -1,9 +1,12 @@
 import { ChevronDown } from 'lucide-react'
+
 import { Button } from '@/primitives/button'
 import { Skeleton } from '@/primitives/skeleton'
+
 import { productPurchaseConstants } from './constants'
 import { availableQuantities } from './helpers'
 import { purchaseStyles } from './styles'
+
 import type { ProductPurchaseProps } from './types'
 
 export function ProductPurchase({ stock }: ProductPurchaseProps) {

@@ -1,7 +1,9 @@
 import Image from 'next/image'
+
+import { productGalleryConstants } from '@/features/product/containers/product-gallery/constants'
 import { cn } from '@/utils/classnames'
+
 import { galleryImageStyles } from './styles'
-import { productGalleryConstants } from '../constants'
 
 export default function GalleryImage({
   src,

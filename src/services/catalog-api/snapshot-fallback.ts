@@ -1,7 +1,7 @@
 import { environment } from '@/config/environment/runtime'
-import categoriesSnapshot from '../../../development/catalog-snapshots/categories.json'
-import categorySillasSnapshot from '../../../development/catalog-snapshots/category-sillas.json'
-import productPages from '../../../development/catalog-snapshots/products.json'
+import categoriesSnapshot from '@development/catalog-snapshots/categories.json'
+import categorySillasSnapshot from '@development/catalog-snapshots/category-sillas.json'
+import productPages from '@development/catalog-snapshots/products.json'
 
 const products = productPages.flatMap((page) => page.results)
 

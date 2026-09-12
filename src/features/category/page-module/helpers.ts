@@ -1,9 +1,11 @@
-import type { Metadata } from 'next'
 import { categoryHref } from '@/containers/category-list/helpers'
-import type { Category } from '@/services/catalog-api'
 import { plainText, truncateAtWord } from '@/utils/plain-text'
+
 import { categoryConstants } from './constants'
+
 import type { CategoryPageMetadata, CategoryParams } from './types'
+import type { Category } from '@/services/catalog-api'
+import type { Metadata } from 'next'
 
 export function resolveCategoryParams(params: CategoryParams) {
   return { slug: params.slug }
