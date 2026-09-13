@@ -27,9 +27,14 @@ Las capturas se generaron sobre el modo local determinista incluido en el proyec
       <img src="docs/readme/product-detail.jpg" alt="Detalle de producto con galería, precio y favorito">
     </td>
   </tr>
+  <tr>
+    <td colspan="2">
+      <img src="docs/readme/lighthouse-scores.png" alt="Puntuaciones de Lighthouse de la aplicación" width="50%">
+    </td>
+  </tr>
 </table>
 
-<img src="docs/readme/products-page-3-mobile.png" alt="Listado de productos en móvil, página 3 con paginación" width="20%">
+<img src="docs/readme/products-page-3-mobile.png" alt="Final del listado de productos en móvil, página 3 con paginación" width="20%">
 
 ## Puesta en marcha
 
