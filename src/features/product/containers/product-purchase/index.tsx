@@ -3,8 +3,8 @@ import { ChevronDown } from 'lucide-react'
 import { Button } from '@/primitives/button'
 import { Skeleton } from '@/primitives/skeleton'
 
-import { productPurchaseConstants } from './constants'
 import { availableQuantities } from './helpers'
+import { productPurchaseMessages } from './messages'
 import { purchaseStyles } from './styles'
 
 import type { ProductPurchaseProps } from './types'
@@ -13,7 +13,7 @@ export function ProductPurchase({ stock }: ProductPurchaseProps) {
   return (
     <div className={purchaseStyles.root}>
       <label htmlFor="quantity" className={purchaseStyles.label}>
-        {productPurchaseConstants.quantityLabel}
+        {productPurchaseMessages.quantityLabel}
       </label>
       <div className={purchaseStyles.row}>
         <div className={purchaseStyles.selectWrapper}>
@@ -21,7 +21,7 @@ export function ProductPurchase({ stock }: ProductPurchaseProps) {
             id="quantity"
             defaultValue="1"
             className={purchaseStyles.select}
-            aria-label={productPurchaseConstants.quantityLabel}
+            aria-label={productPurchaseMessages.quantityLabel}
           >
             {availableQuantities(stock).map((quantity) => (
               <option key={quantity}>{quantity}</option>
@@ -36,9 +36,9 @@ export function ProductPurchase({ stock }: ProductPurchaseProps) {
           disabled
           variant="purchase"
           className={purchaseStyles.cta}
-          aria-label={productPurchaseConstants.unavailableLabel}
+          aria-label={productPurchaseMessages.unavailableLabel}
         >
-          {productPurchaseConstants.cta}
+          {productPurchaseMessages.cta}
         </Button>
       </div>
     </div>

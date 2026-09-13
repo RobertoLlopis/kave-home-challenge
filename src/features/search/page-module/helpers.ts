@@ -1,6 +1,6 @@
 import { routes } from '@/constants/routes'
 
-import { searchCopy } from './constants'
+import { searchCopy } from './messages'
 
 import type { SearchPageMetadata, SearchQuery } from './types'
 

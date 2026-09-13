@@ -1,6 +1,6 @@
 import { routes } from '@/constants/routes'
 
-import { categoriesCopy } from './constants'
+import { categoriesCopy } from './messages'
 
 import type { Metadata } from 'next'
 

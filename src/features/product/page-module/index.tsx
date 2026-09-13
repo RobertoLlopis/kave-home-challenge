@@ -1,4 +1,4 @@
-import { accessibility } from '@/constants/accessibility'
+import { accessibility } from '@/constants/accessibility/constants'
 import { FavoriteButton } from '@/containers/favorite-button'
 import { Price } from '@/containers/price'
 import { DeliveryMessage } from '@/features/product/containers/delivery-message'
@@ -7,7 +7,7 @@ import { ProductPurchase } from '@/features/product/containers/product-purchase'
 import { ServiceFooter } from '@/features/product/containers/service-footer'
 import { Skeleton } from '@/primitives/skeleton'
 
-import { productDetailConstants } from './constants'
+import { productDetailMessages } from './messages'
 import { productDetailStyles } from './styles'
 
 import type { ProductDetailPageProps } from './types'
@@ -79,7 +79,7 @@ ProductDetailPage.Loading = function ProductDetailLoading() {
       tabIndex={accessibility.mainContentTabIndex}
       className={productDetailStyles.main}
       aria-busy="true"
-      aria-label={productDetailConstants.loadingLabel}
+      aria-label={productDetailMessages.loadingLabel}
     >
       <div className={productDetailStyles.layout}>
         <ProductGallery.Loading />

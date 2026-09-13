@@ -4,6 +4,7 @@ import { Skeleton } from '@/primitives/skeleton'
 import { cn } from '@/utils/classnames'
 
 import { productImageConstants } from './constants'
+import { productImageMessages } from './messages'
 import { productImageLoadingStyles, productImageStyles } from './styles'
 
 import type { ProductImageProps } from './types'
@@ -15,7 +16,7 @@ function sourceFor(src: string | null) {
 
 function altFor(src: string | null, alt: string) {
   if (src) return alt
-  return `${productImageConstants.fallbackPrefix}${alt}`
+  return `${productImageMessages.fallbackPrefix}${alt}`
 }
 
 export function ProductImage({

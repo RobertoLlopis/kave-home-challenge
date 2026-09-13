@@ -1,10 +1,10 @@
 import Link from 'next/link'
 
-import { accessibility } from '@/constants/accessibility'
+import { accessibility } from '@/constants/accessibility/constants'
 import { routes } from '@/constants/routes'
 import { Button } from '@/primitives/button'
 
-import { notFoundCopy } from './constants'
+import { notFoundCopy } from './messages'
 import { notFoundStyles } from './styles'
 
 export default function NotFoundPage() {

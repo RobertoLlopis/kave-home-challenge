@@ -1,6 +1,6 @@
 'use client'
-import { productGalleryConstants } from '@/features/product/containers/product-gallery/constants'
 import GalleryImage from '@/features/product/containers/product-gallery/gallery-image'
+import { productGalleryMessages } from '@/features/product/containers/product-gallery/messages'
 import { ProductGalleryImageProps } from '@/features/product/containers/product-gallery/types'
 
 import { useInfiniteGalleryScroll } from './hooks'
@@ -17,7 +17,7 @@ export function MobileProductGallery({
     <div
       role="region"
       aria-roledescription="carrusel"
-      aria-label={productGalleryConstants.label}
+      aria-label={productGalleryMessages.label}
       className={mobileGalleryStyles.mobile}
     >
       <div
@@ -45,7 +45,6 @@ export function MobileProductGallery({
                 }
                 priority={imageIndex === 0 && !clone}
                 sizes="(max-width: 767px) 100vw, 1px"
-                className={mobileGalleryStyles.mobileImage}
               />
             </div>
           )

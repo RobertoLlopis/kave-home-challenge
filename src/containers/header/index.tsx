@@ -1,28 +1,28 @@
 import { Heart } from 'lucide-react'
 import Link from 'next/link'
 
-import { accessibility } from '@/constants/accessibility'
+import { accessibilityMessages } from '@/constants/accessibility/messages'
 import { routes } from '@/constants/routes'
 import { SearchControl } from '@/containers/search-control'
 
-import { headerConstants } from './constants'
+import { headerMessages } from './messages'
 import { headerStyles } from './styles'
 
 export default function Header() {
   return (
     <header className={headerStyles.siteHeader}>
       <Link className={headerStyles.brand} href={routes.home}>
-        {headerConstants.appName}
+        {headerMessages.appName}
       </Link>
       <nav
-        aria-label={accessibility.primaryNavLabel}
+        aria-label={accessibilityMessages.primaryNavLabel}
         className={headerStyles.nav}
       >
         <SearchControl />
         <Link
           className={headerStyles.iconLink}
           href={routes.favorites}
-          aria-label={headerConstants.favoritesLabel}
+          aria-label={headerMessages.favoritesLabel}
         >
           <Heart aria-hidden="true" />
         </Link>

@@ -9,8 +9,8 @@ import { Button } from '@/primitives/button'
 import { Input } from '@/primitives/input'
 import { cn } from '@/utils/classnames'
 
-import { searchControlConstants } from './constants'
 import { useDesktopSearchDisclosure, useSearchNavigation } from './hooks'
+import { searchControlMessages } from './messages'
 import { searchControlStyles } from './styles'
 
 function DesktopSearch() {
@@ -40,8 +40,8 @@ function DesktopSearch() {
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           onKeyDown={closeOnEscape}
-          aria-label={searchControlConstants.fieldLabel}
-          placeholder={searchControlConstants.placeholder}
+          aria-label={searchControlMessages.fieldLabel}
+          placeholder={searchControlMessages.placeholder}
           className={searchControlStyles.desktopInput}
           tabIndex={open ? 0 : -1}
         />
@@ -49,7 +49,7 @@ function DesktopSearch() {
           type="submit"
           nativeButton
           variant="icon"
-          aria-label={searchControlConstants.submitLabel}
+          aria-label={searchControlMessages.submitLabel}
           tabIndex={open ? 0 : -1}
           className={searchControlStyles.headerIconButton}
         >
@@ -60,7 +60,7 @@ function DesktopSearch() {
         type="button"
         nativeButton
         variant="icon"
-        aria-label={searchControlConstants.openLabel}
+        aria-label={searchControlMessages.openLabel}
         aria-expanded={open}
         aria-hidden={open || undefined}
         tabIndex={open ? -1 : 0}
@@ -86,7 +86,7 @@ function MobileSearch() {
       <Drawer.Root open={open} onOpenChange={setOpen} swipeDirection="up">
         <Drawer.Trigger
           className={searchControlStyles.mobileTrigger}
-          aria-label={searchControlConstants.openLabel}
+          aria-label={searchControlMessages.openLabel}
         >
           <Search
             aria-hidden="true"
@@ -99,11 +99,11 @@ function MobileSearch() {
             <Drawer.Popup className={searchControlStyles.popup}>
               <div className={searchControlStyles.mobileHeader}>
                 <Drawer.Title className={searchControlStyles.drawerTitle}>
-                  {searchControlConstants.drawerTitle}
+                  {searchControlMessages.drawerTitle}
                 </Drawer.Title>
                 <Drawer.Close
                   className={searchControlStyles.iconButton}
-                  aria-label={searchControlConstants.closeLabel}
+                  aria-label={searchControlMessages.closeLabel}
                 >
                   <X aria-hidden="true" className={searchControlStyles.icon} />
                 </Drawer.Close>
@@ -111,7 +111,7 @@ function MobileSearch() {
               <Drawer.Description
                 className={searchControlStyles.drawerDescription}
               >
-                {searchControlConstants.drawerDescription}
+                {searchControlMessages.drawerDescription}
               </Drawer.Description>
               <form
                 action={routes.search}
@@ -125,15 +125,15 @@ function MobileSearch() {
                   name="q"
                   value={query}
                   onChange={(event) => setQuery(event.target.value)}
-                  aria-label={searchControlConstants.fieldLabel}
-                  placeholder={searchControlConstants.placeholder}
+                  aria-label={searchControlMessages.fieldLabel}
+                  placeholder={searchControlMessages.placeholder}
                   className={searchControlStyles.mobileInput}
                 />
                 <Button
                   type="submit"
                   nativeButton
                   variant="icon"
-                  aria-label={searchControlConstants.submitLabel}
+                  aria-label={searchControlMessages.submitLabel}
                 >
                   <Search aria-hidden="true" />
                 </Button>

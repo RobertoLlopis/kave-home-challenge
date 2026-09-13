@@ -1,13 +1,13 @@
 import Link from 'next/link'
 
-import { accessibility } from '@/constants/accessibility'
+import { accessibility } from '@/constants/accessibility/constants'
 import { routes } from '@/constants/routes'
 import { CategoryList } from '@/containers/category-list'
 import { Button } from '@/primitives/button'
 import { Skeleton } from '@/primitives/skeleton'
 
-import { categoryConstants } from './constants'
 import { categoryDescription } from './helpers'
+import { categoryMessages } from './messages'
 import { categoryStyles } from './styles'
 
 import type { CategoryPageProps } from './types'
@@ -32,13 +32,13 @@ export function CategoryPage({ category }: CategoryPageProps) {
           variant="secondary"
           render={<Link href={routes.products} />}
         >
-          {categoryConstants.catalogCta}
+          {categoryMessages.catalogCta}
         </Button>
       </div>
       {children.length > 0 ? (
         <section className={categoryStyles.section}>
           <h2 className={categoryStyles.sectionTitle}>
-            {categoryConstants.childrenTitle}
+            {categoryMessages.childrenTitle}
           </h2>
           <CategoryList categories={children} limit={children.length} />
         </section>
@@ -54,7 +54,7 @@ CategoryPage.Loading = function CategoryLoading() {
       tabIndex={accessibility.mainContentTabIndex}
       className={categoryStyles.content}
       aria-busy="true"
-      aria-label={categoryConstants.loadingLabel}
+      aria-label={categoryMessages.loadingLabel}
     >
       <header className={categoryStyles.header}>
         <Skeleton className={categoryStyles.loadingTitle} aria-hidden="true" />

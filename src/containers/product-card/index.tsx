@@ -9,6 +9,7 @@ import { Card } from '@/primitives/card'
 
 import { productCardConstants } from './constants'
 import { productCardHref } from './helpers'
+import { productCardMessages } from './messages'
 import { productCardStyles } from './styles'
 
 import type { ProductCardProps } from './types'
@@ -47,7 +48,7 @@ export function ProductCard({ product, eagerImage = false }: ProductCardProps) {
           </span>
           <Button
             type="button"
-            aria-label="Añadir a la cesta no disponible"
+            aria-label={productCardMessages.unavailableCartLabel}
             disabled
             variant="icon"
             className={productCardStyles.addToCart}

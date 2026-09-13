@@ -5,8 +5,8 @@ import { Button } from '@/primitives/button'
 import { Skeleton } from '@/primitives/skeleton'
 import { cn } from '@/utils/classnames'
 
-import { paginationLabels, pageStatus } from './constants'
 import { pageRange } from './helpers'
+import { paginationLabels, pageStatus } from './messages'
 import { paginationStyles } from './styles'
 
 import type {

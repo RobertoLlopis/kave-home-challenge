@@ -1,8 +1,8 @@
 'use client'
-import { accessibility } from '@/constants/accessibility'
+import { accessibility } from '@/constants/accessibility/constants'
 import { Button } from '@/primitives/button'
 
-import { errorCopy } from './constants'
+import { errorCopy } from './messages'
 import { errorStyles } from './styles'
 
 import type { ErrorPageProps } from './types'

@@ -3,10 +3,8 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-import {
-  editorialConstants,
-  editorialItems,
-} from '@/features/home/containers/editorial-carousel/constants'
+import { editorialItems } from '@/features/home/containers/editorial-carousel/constants'
+import { editorialMessages } from '@/features/home/containers/editorial-carousel/messages'
 import { editorialStyles } from '@/features/home/containers/editorial-carousel/styles'
 import { Button } from '@/primitives/button'
 import { cn } from '@/utils/classnames'
@@ -16,6 +14,7 @@ import { useEditorialRotator } from './hooks'
 export function MobileEditorialRotator() {
   const { advanceManually, index, item, paused, togglePause, visible } =
     useEditorialRotator()
+  const message = editorialMessages.items[item.messageKey]
 
   return (
     <article
@@ -38,7 +37,7 @@ export function MobileEditorialRotator() {
         nativeButton
         variant="icon"
         className={editorialStyles.advance}
-        aria-label={editorialConstants.nextLabel}
+        aria-label={editorialMessages.nextLabel}
         onClick={advanceManually}
       />
       <Button
@@ -47,19 +46,15 @@ export function MobileEditorialRotator() {
         variant="secondary"
         className={editorialStyles.pause}
         aria-label={
-          paused
-            ? editorialConstants.resumeLabel
-            : editorialConstants.pauseLabel
+          paused ? editorialMessages.resumeLabel : editorialMessages.pauseLabel
         }
         onClick={togglePause}
       >
-        {paused
-          ? editorialConstants.resumeLabel
-          : editorialConstants.pauseLabel}
+        {paused ? editorialMessages.resumeLabel : editorialMessages.pauseLabel}
       </Button>
-      <h2 className={editorialStyles.title}>{item.title}</h2>
+      <h2 className={editorialStyles.title}>{message.title}</h2>
       <Link href={item.href} className={editorialStyles.cta}>
-        {item.cta}
+        {message.cta}
       </Link>
     </article>
   )

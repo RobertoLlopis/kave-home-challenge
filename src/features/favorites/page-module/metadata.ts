@@ -1,4 +1,4 @@
-import { favoritesCopy } from './constants'
+import { favoritesCopy } from './messages'
 
 import type { Metadata } from 'next'
 

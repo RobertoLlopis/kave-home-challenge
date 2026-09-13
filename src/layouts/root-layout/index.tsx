@@ -6,6 +6,7 @@ import { FavoritesProvider } from '@/providers/favorites'
 import { cn } from '@/utils/classnames'
 
 import { rootLayoutConstants } from './constants'
+import { rootLayoutMessages } from './messages'
 import { rootLayoutStyles } from './styles'
 
 import type { RootLayoutProps } from './types'
@@ -20,8 +21,8 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   metadataBase: environment.siteUrl,
-  title: rootLayoutConstants.defaultMetadataTitle,
-  description: rootLayoutConstants.defaultMetadataDescription,
+  title: rootLayoutMessages.defaultMetadataTitle,
+  description: rootLayoutMessages.defaultMetadataDescription,
 }
 
 export default function RootLayout({ children }: RootLayoutProps) {

@@ -1,7 +1,7 @@
-import { accessibility } from '@/constants/accessibility'
+import { accessibility } from '@/constants/accessibility/constants'
 import { CategoryList } from '@/containers/category-list'
 
-import { categoriesCopy } from './constants'
+import { categoriesCopy } from './messages'
 import { categoriesStyles } from './styles'
 
 import type { CategoriesPageProps } from './types'

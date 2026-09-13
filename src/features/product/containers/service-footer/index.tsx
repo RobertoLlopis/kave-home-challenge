@@ -4,12 +4,13 @@ import { commonStyles } from '@/styles/common'
 import { cn } from '@/utils/classnames'
 
 import { serviceFooterConstants } from './constants'
+import { serviceFooterMessages } from './messages'
 import { serviceFooterStyles } from './styles'
 
 export function ServiceFooter() {
   return (
     <footer className={serviceFooterStyles.root}>
-      {serviceFooterConstants.services.map((service) => (
+      {serviceFooterMessages.services.map((service) => (
         <div
           className={cn(
             serviceFooterStyles.item,

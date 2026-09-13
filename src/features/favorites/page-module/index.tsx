@@ -1,7 +1,7 @@
-import { accessibility } from '@/constants/accessibility'
+import { accessibility } from '@/constants/accessibility/constants'
 import { FavoritesList } from '@/features/favorites/containers/list'
 
-import { favoritesCopy } from './constants'
+import { favoritesCopy } from './messages'
 import { favoritesStyles } from './styles'
 import { FavoritesView } from './view'
 

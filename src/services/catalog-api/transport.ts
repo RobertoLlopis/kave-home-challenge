@@ -3,6 +3,7 @@ import { tryCatch } from '@/utils/try-catch'
 
 import { catalogApiConstants } from './constants'
 import { CatalogApiError } from './error'
+import { catalogApiMessages } from './messages'
 import { snapshotCatalog } from './snapshot-fallback'
 
 import type { CatalogRequestOptions } from './types'
@@ -11,8 +12,8 @@ export type { CatalogFetcher, CatalogRequestOptions } from './types'
 
 function requestFailure(error: unknown): CatalogApiError {
   if (error instanceof DOMException && error.name === 'TimeoutError')
-    return new CatalogApiError(catalogApiConstants.messages.timeout, 'timeout')
-  return new CatalogApiError(catalogApiConstants.messages.network, 'network')
+    return new CatalogApiError(catalogApiMessages.timeout, 'timeout')
+  return new CatalogApiError(catalogApiMessages.network, 'network')
 }
 
 function fallbackOrThrow(path: string, error: CatalogApiError): unknown {
@@ -42,7 +43,7 @@ export async function requestCatalog(
     return fallbackOrThrow(
       path,
       new CatalogApiError(
-        catalogApiConstants.messages.http(response.status),
+        catalogApiMessages.http(response.status),
         'http',
         response.status,
       ),
@@ -50,17 +51,14 @@ export async function requestCatalog(
   if (!response.headers.get('content-type')?.includes('application/json'))
     return fallbackOrThrow(
       path,
-      new CatalogApiError(
-        catalogApiConstants.messages.contentType,
-        'content-type',
-      ),
+      new CatalogApiError(catalogApiMessages.contentType, 'content-type'),
     )
 
   const [payload, parseError] = await tryCatch(response.json())
   if (parseError !== null)
     return fallbackOrThrow(
       path,
-      new CatalogApiError(catalogApiConstants.messages.invalidJson, 'contract'),
+      new CatalogApiError(catalogApiMessages.invalidJson, 'contract'),
     )
   return payload
 }

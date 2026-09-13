@@ -1,9 +1,8 @@
 export const galleryStyles = {
   root: 'relative min-w-0',
   desktop: 'hidden min-w-0 md:block',
-  main: 'relative aspect-[4/3] overflow-hidden bg-surface-subtle',
+  main: 'relative aspect-[4/5] overflow-hidden bg-muted',
   thumb:
-    'relative aspect-square basis-[calc((100%_-_0.125rem)/3)] shrink-0 snap-start overflow-hidden bg-surface-subtle',
-  loading:
-    'h-[calc(90dvh-var(--header-height))] animate-pulse bg-muted md:aspect-[4/3] md:h-auto',
+    'relative aspect-[4/5] basis-[calc((100%_-_0.125rem)/3)] shrink-0 snap-start overflow-hidden bg-muted',
+  loading: 'aspect-[4/5] animate-pulse bg-muted',
 } as const

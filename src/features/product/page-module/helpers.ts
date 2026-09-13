@@ -1,6 +1,7 @@
 import { plainText, truncateAtWord } from '@/utils/plain-text'
 
 import { productDetailConstants } from './constants'
+import { productDetailMessages } from './messages'
 
 import type { ProductPageMetadata, ProductQuery } from './types'
 import type { Product } from '@/services/catalog-api'
@@ -27,7 +28,7 @@ export function productMetadataTitle(value: string) {
 
 export function productMetadata(product: Product): ProductPageMetadata {
   return {
-    title: `${productMetadataTitle(product.title)} · ${productDetailConstants.brand}`,
+    title: `${productMetadataTitle(product.title)} · ${productDetailMessages.brand}`,
     description: productMetadataDescription(product.description),
     alternates: {
       canonical: productCanonical(product.sku),
@@ -36,5 +37,5 @@ export function productMetadata(product: Product): ProductPageMetadata {
 }
 
 export function productNotFoundMetadata(): ProductPageMetadata {
-  return { title: productDetailConstants.notFoundMetadata }
+  return { title: productDetailMessages.notFoundMetadata }
 }

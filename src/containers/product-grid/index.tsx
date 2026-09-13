@@ -1,6 +1,7 @@
 import { ProductCard } from '@/containers/product-card'
 
 import { productGridConstants } from './constants'
+import { productGridMessages } from './messages'
 import { productGridStyles } from './styles'
 
 import type { ProductGridLoadingProps, ProductGridProps } from './types'
@@ -9,7 +10,7 @@ export function ProductGrid({ products }: ProductGridProps) {
   if (products.length === 0)
     return (
       <p role="status" className={productGridStyles.empty}>
-        {productGridConstants.emptyMessage}
+        {productGridMessages.emptyMessage}
       </p>
     )
   return (

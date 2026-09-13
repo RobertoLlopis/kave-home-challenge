@@ -2,8 +2,8 @@
 
 import { createContext, useContext } from 'react'
 
-import { favoritesConstants } from './constants'
 import { useFavoritesState } from './hooks'
+import { favoritesMessages } from './messages'
 
 import type { FavoritesContextValue, FavoritesProviderProps } from './types'
 export type { FavoriteItem } from './types'
@@ -31,6 +31,6 @@ export function FavoritesProvider({
 
 export function useFavorites() {
   const context = useContext(Context)
-  if (!context) throw new Error(favoritesConstants.contextError)
+  if (!context) throw new Error(favoritesMessages.contextError)
   return context
 }

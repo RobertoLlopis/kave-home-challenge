@@ -1,7 +1,7 @@
 export const productDetailStyles = {
   main: 'w-full',
   layout:
-    'grid min-w-0 md:grid-cols-[minmax(0,5fr)_minmax(18rem,3fr)] md:gap-8 md:px-6 md:pb-8 lg:px-8',
+    'grid min-w-0 md:grid-cols-[minmax(0,5fr)_minmax(18rem,4fr)] md:gap-8 md:px-6 md:pb-8 lg:px-8',
   panel:
     'relative z-10 -mt-4 bg-background px-4 pb-6 pt-8 md:mt-0 md:px-0 md:py-4 md:pr-2',
   panelHandle:

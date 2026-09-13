@@ -1,7 +1,7 @@
 import { routes } from '@/constants/routes'
 import { productListingCanonical } from '@/containers/product-listing'
 
-import { homeCopy } from './constants'
+import { homeCopy } from './messages'
 
 import type { HomeRouteProps, HomePageMetadata } from './types'
 

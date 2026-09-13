@@ -1,14 +1,14 @@
 'use client'
 import Link from 'next/link'
 
-import { accessibility } from '@/constants/accessibility'
+import { accessibility } from '@/constants/accessibility/constants'
 import { routes } from '@/constants/routes'
 import { FavoritesList } from '@/features/favorites/containers/list'
 import { Button } from '@/primitives/button'
 import { useFavorites } from '@/providers/favorites'
 
-import { favoritesCopy } from './constants'
 import { favoriteProduct } from './helpers'
+import { favoritesCopy } from './messages'
 import { favoritesStyles } from './styles'
 
 import type { FavoritesViewProps } from './types'

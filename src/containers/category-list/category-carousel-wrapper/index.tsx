@@ -2,7 +2,7 @@
 
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 
-import { categoryListConstants } from '@/containers/category-list/constants'
+import { categoryListMessages } from '@/containers/category-list/messages'
 import { categoryListStyles } from '@/containers/category-list/styles'
 import { Button } from '@/primitives/button'
 
@@ -20,7 +20,7 @@ export default function CategoryCarouselWrapper({
   return (
     <div
       role="region"
-      aria-label={categoryListConstants.carouselLabel}
+      aria-label={categoryListMessages.carouselLabel}
       aria-roledescription="carousel"
       className={categoryListStyles.carousel}
     >
@@ -28,7 +28,7 @@ export default function CategoryCarouselWrapper({
         <Button
           type="button"
           nativeButton
-          aria-label={categoryListConstants.previousLabel}
+          aria-label={categoryListMessages.previousLabel}
           disabled={position <= 1}
           onClick={() => move(-1)}
         >
@@ -37,7 +37,7 @@ export default function CategoryCarouselWrapper({
         <Button
           type="button"
           nativeButton
-          aria-label={categoryListConstants.nextLabel}
+          aria-label={categoryListMessages.nextLabel}
           disabled={position >= max - 1}
           onClick={() => move(1)}
         >

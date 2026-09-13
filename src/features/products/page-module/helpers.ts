@@ -1,7 +1,7 @@
 import { routes } from '@/constants/routes'
 import { productListingCanonical } from '@/containers/product-listing'
 
-import { productsCopy } from './constants'
+import { productsCopy } from './messages'
 
 import type { ProductsPageMetadata } from './types'
 import type { Metadata } from 'next'

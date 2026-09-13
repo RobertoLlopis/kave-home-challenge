@@ -1,4 +1,5 @@
-import { accessibility } from '@/constants/accessibility'
+import { accessibility } from '@/constants/accessibility/constants'
+import { accessibilityMessages } from '@/constants/accessibility/messages'
 import Header from '@/containers/header'
 
 import { shellStyles } from './styles'
@@ -12,7 +13,7 @@ export function SiteShell({ children }: SiteShellProps) {
         className={shellStyles.skipLink}
         href={`#${accessibility.mainContentId}`}
       >
-        {accessibility.skipLinkLabel}
+        {accessibilityMessages.skipLinkLabel}
       </a>
       <Header />
       {children}

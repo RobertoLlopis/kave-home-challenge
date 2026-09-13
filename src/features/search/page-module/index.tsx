@@ -1,8 +1,9 @@
-import { accessibility } from '@/constants/accessibility'
+import { accessibility } from '@/constants/accessibility/constants'
 import { ProductGrid } from '@/containers/product-grid'
 
-import { searchConstants, searchCopy } from './constants'
+import { searchConstants } from './constants'
 import { searchDescription, searchHeading } from './helpers'
+import { searchCopy } from './messages'
 import { searchStyles } from './styles'
 
 import type { SearchPageProps } from './types'

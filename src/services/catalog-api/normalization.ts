@@ -3,6 +3,7 @@ import { tryCatchSync } from '@/utils/try-catch'
 
 import { catalogApiConstants } from './constants'
 import { CatalogApiError } from './error'
+import { catalogApiMessages } from './messages'
 
 import type { Category, Envelope, Product, SearchHit } from './types'
 
@@ -68,7 +69,7 @@ export function normalizeProduct(value: unknown): Product | null {
     collection:
       typeof product.collection === 'string' && product.collection.trim()
         ? product.collection
-        : catalogApiConstants.fallbackCollection,
+        : catalogApiMessages.fallbackCollection,
     slug:
       typeof product.slug === 'string'
         ? product.slug
@@ -86,19 +87,13 @@ export function normalizeProduct(value: unknown): Product | null {
 function requiredProduct(value: unknown): Product {
   const product = normalizeProduct(value)
   if (!product)
-    throw new CatalogApiError(
-      catalogApiConstants.messages.invalidProduct,
-      'contract',
-    )
+    throw new CatalogApiError(catalogApiMessages.invalidProduct, 'contract')
   return product
 }
 
 export function normalizeEnvelope(value: unknown): Envelope<unknown> {
   if (!value || typeof value !== 'object')
-    throw new CatalogApiError(
-      catalogApiConstants.messages.invalidResponse,
-      'contract',
-    )
+    throw new CatalogApiError(catalogApiMessages.invalidResponse, 'contract')
   const envelope = value as Record<string, unknown>
   if (
     !Array.isArray(envelope.results) ||
@@ -106,15 +101,9 @@ export function normalizeEnvelope(value: unknown): Envelope<unknown> {
     !Number.isFinite(envelope.count) ||
     envelope.count < 0
   )
-    throw new CatalogApiError(
-      catalogApiConstants.messages.invalidEnvelope,
-      'contract',
-    )
+    throw new CatalogApiError(catalogApiMessages.invalidEnvelope, 'contract')
   if (!validCatalogUrl(envelope.next) || !validCatalogUrl(envelope.previous))
-    throw new CatalogApiError(
-      catalogApiConstants.messages.invalidPagination,
-      'contract',
-    )
+    throw new CatalogApiError(catalogApiMessages.invalidPagination, 'contract')
   return {
     count: envelope.count,
     next: envelope.next,
@@ -167,10 +156,7 @@ export function normalizeCategory(value: unknown): Category | null {
 function requiredCategory(value: unknown): Category {
   const category = normalizeCategory(value)
   if (!category)
-    throw new CatalogApiError(
-      catalogApiConstants.messages.invalidCategory,
-      'contract',
-    )
+    throw new CatalogApiError(catalogApiMessages.invalidCategory, 'contract')
   return category
 }
 
@@ -191,16 +177,10 @@ export function normalizeRequiredCategory(value: unknown): Category {
 
 export function normalizeSearchHits(value: unknown): SearchHit[] {
   if (!Array.isArray(value))
-    throw new CatalogApiError(
-      catalogApiConstants.messages.invalidSearch,
-      'contract',
-    )
+    throw new CatalogApiError(catalogApiMessages.invalidSearch, 'contract')
   return value.map((item) => {
     if (!item || typeof item !== 'object')
-      throw new CatalogApiError(
-        catalogApiConstants.messages.invalidSearch,
-        'contract',
-      )
+      throw new CatalogApiError(catalogApiMessages.invalidSearch, 'contract')
     const hit = item as Record<string, unknown>
     if (
       typeof hit.title !== 'string' ||
@@ -210,10 +190,7 @@ export function normalizeSearchHits(value: unknown): SearchHit[] {
       typeof hit.url !== 'string' ||
       !validCatalogUrl(hit.url)
     )
-      throw new CatalogApiError(
-        catalogApiConstants.messages.invalidSearch,
-        'contract',
-      )
+      throw new CatalogApiError(catalogApiMessages.invalidSearch, 'contract')
     return { title: hit.title, sku: hit.sku, url: hit.url }
   })
 }

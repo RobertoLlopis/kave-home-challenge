@@ -3,7 +3,7 @@ import { cn } from '@/utils/classnames'
 
 export const productCardStyles = {
   card: 'rounded-none border-0 ring-0',
-  image: 'relative aspect-square bg-surface-subtle',
+  image: 'relative aspect-[4/5] bg-muted',
   imageLink: 'absolute inset-0 no-underline',
   favorite: '[&_svg]:-translate-y-1.5 [&_svg]:translate-x-1.5',
   body: 'p-2 [&_[data-slot=price]]:mt-1 [&_[data-slot=price]]:text-[11px] md:[&_[data-slot=price]]:text-xs',

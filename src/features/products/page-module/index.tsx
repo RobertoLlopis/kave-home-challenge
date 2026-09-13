@@ -1,7 +1,7 @@
-import { accessibility } from '@/constants/accessibility'
+import { accessibility } from '@/constants/accessibility/constants'
 import { ProductListing } from '@/containers/product-listing'
 
-import { productsCopy } from './constants'
+import { productsCopy } from './messages'
 import { productsStyles } from './styles'
 
 import type { ProductsPageProps } from './types'

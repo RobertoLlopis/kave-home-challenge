@@ -2,6 +2,7 @@ import { categoryHref } from '@/containers/category-list/helpers'
 import { plainText, truncateAtWord } from '@/utils/plain-text'
 
 import { categoryConstants } from './constants'
+import { categoryMessages } from './messages'
 
 import type { CategoryPageMetadata, CategoryParams } from './types'
 import type { Category } from '@/services/catalog-api'
@@ -17,12 +18,12 @@ export function categoryCanonical(slug: string) {
 
 export function categoryDescription(category: Category) {
   const text = plainText(category.description)
-  return text || categoryConstants.fallbackDescription
+  return text || categoryMessages.fallbackDescription
 }
 
 export function categoryMetadataTitle(category: Category) {
   return (
-    category.seoTitle.trim() || `${category.name} · ${categoryConstants.brand}`
+    category.seoTitle.trim() || `${category.name} · ${categoryMessages.brand}`
   )
 }
 
@@ -31,7 +32,7 @@ export function categoryMetadataDescription(category: Category) {
   const text = plainText(category.description)
   return text
     ? truncateAtWord(text, categoryConstants.descriptionLimit)
-    : categoryConstants.fallbackDescription
+    : categoryMessages.fallbackDescription
 }
 
 // El API sirve `seo.index` como lista de directivas ("index,follow"). Se
@@ -71,5 +72,5 @@ export function categoryMetadata(category: Category): CategoryPageMetadata {
 }
 
 export function categoryNotFoundMetadata(): CategoryPageMetadata {
-  return { title: categoryConstants.notFoundMetadata }
+  return { title: categoryMessages.notFoundMetadata }
 }

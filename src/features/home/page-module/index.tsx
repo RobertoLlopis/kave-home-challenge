@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { accessibility } from '@/constants/accessibility'
+import { accessibility } from '@/constants/accessibility/constants'
 import { routes } from '@/constants/routes'
 import { CategoryList } from '@/containers/category-list'
 import { ProductListing } from '@/containers/product-listing'
@@ -9,7 +9,8 @@ import { EditorialCarousel } from '@/features/home/containers/editorial-carousel
 import { editorialUrl } from '@/features/home/containers/editorial-carousel/constants'
 import { Button } from '@/primitives/button'
 
-import { homeAssets, homeCopy } from './constants'
+import { homeAssets } from './constants'
+import { homeCopy } from './messages'
 import { homeStyles } from './styles'
 
 import type { HomePageProps } from './types'
