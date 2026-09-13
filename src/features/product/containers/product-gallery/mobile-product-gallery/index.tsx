@@ -14,14 +14,13 @@ export function MobileProductGallery({
     useInfiniteGalleryScroll(images)
 
   return (
-    <div
-      role="region"
-      aria-roledescription="carrusel"
-      aria-label={productGalleryMessages.label}
-      className={mobileGalleryStyles.mobile}
-    >
+    <div className={mobileGalleryStyles.mobile}>
       <div
         ref={viewport}
+        role="region"
+        aria-roledescription="carrusel"
+        aria-label={productGalleryMessages.label}
+        tabIndex={0}
         className={mobileGalleryStyles.mobileTrack}
         onScroll={scheduleCorrection}
       >

@@ -4,37 +4,67 @@ Storefront responsive construido con Next.js 16, React 19, TypeScript y Tailwind
 
 [Ver despliegue en Vercel](https://kave-home-challenge.vercel.app)
 
-## Vista rápida
+## Galería
 
 Las capturas se generaron sobre el modo local determinista incluido en el proyecto.
 
-<img src="docs/readme/home-hero.jpg" alt="Hero editorial de la página de inicio" width="100%">
+### Inicio
+
+<table>
+  <tr>
+    <td colspan="2">
+      <img src="docs/readme/home-hero.jpg" alt="Hero editorial de la página de inicio" width="100%">
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <img src="docs/readme/home-categories.jpg" alt="Categorías de la página de inicio en escritorio" width="100%">
+    </td>
+    <td width="50%">
+      <img src="docs/readme/home-mobile-categories.png" alt="Carrusel de categorías de la página de inicio en móvil" width="50%">
+    </td>
+  </tr>
+</table>
+
+### Catálogo y favoritos
 
 <table>
   <tr>
     <td width="50%">
-      <img src="docs/readme/home-mobile-categories.png" alt="Carrusel de categorías de la página de inicio en móvil">
+      <img src="docs/readme/products-page-3-mobile.png" alt="Final del listado de productos en móvil, página 3 con paginación" width="50%">
     </td>
     <td width="50%">
-      <img src="docs/readme/favorites-mobile.png" alt="Página de favoritos en móvil">
+      <img src="docs/readme/favorites-mobile.png" alt="Página de favoritos en móvil con tres productos marcados" width="50%">
     </td>
   </tr>
   <tr>
     <td width="50%">
-      <img src="docs/readme/search-input-mobile.png" alt="Buscador abierto en móvil">
+      <img src="docs/readme/search-input-mobile.png" alt="Buscador abierto en móvil sobre resultados" width="50%">
     </td>
     <td width="50%">
-      <img src="docs/readme/product-detail.jpg" alt="Detalle de producto con galería, precio y favorito">
-    </td>
-  </tr>
-  <tr>
-    <td colspan="2">
       <img src="docs/readme/lighthouse-scores.png" alt="Puntuaciones de Lighthouse de la aplicación" width="50%">
     </td>
   </tr>
 </table>
 
-<img src="docs/readme/products-page-3-mobile.png" alt="Final del listado de productos en móvil, página 3 con paginación" width="20%">
+### Detalle de producto
+
+<table>
+  <tr>
+    <td width="50%">
+      <img src="docs/readme/product-detail.jpg" alt="Detalle de producto en escritorio con la primera imagen de la galería" width="100%">
+    </td>
+    <td width="50%">
+      <img src="docs/readme/product-detail-desktop-scrolled.jpg" alt="Galería del producto en escritorio desplazada para mostrar más imágenes" width="100%">
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <img src="docs/readme/product-detail-mobile-second.png" alt="Detalle de producto en móvil mostrando la segunda imagen de la galería" width="50%">
+    </td>
+    <td width="50%"></td>
+  </tr>
+</table>
 
 ## Puesta en marcha
 
@@ -171,15 +201,4 @@ No se añadieron dependencias de testing de componentes ni una suite E2E sólo p
 
 ## Uso de IA
 
-La IA formó parte del proceso de desarrollo, pero no se utilizó como un generador único al que entregar el briefing y aceptar el primer resultado. El trabajo se dividió en fases pequeñas, con decisiones y revisiones registradas en los documentos locales de `.idea`: consolidación de requisitos, scaffold mínimo, inspección del contrato real, implementación por rutas, reparación arquitectónica, auditorías visuales y cierre.
-
-Algunas decisiones se refinaron precisamente a partir de ese diálogo:
-
-- mantener la obtención de datos en servidor en vez de trasladarla al cliente para esquivar el problema de la API;
-- separar desarrollo determinista, integración live y producción, manteniendo el fallback de producción desactivado por defecto y explícito mediante configuración;
-- evolucionar desde componentes ligados a Home hacia la regla fractal de promoción sólo cuando apareció reutilización real;
-- mantener carrito y checkout deshabilitados antes que simular comportamiento no solicitado;
-- reducir los tests a contratos y casos de fallo con impacto, en vez de medir cobertura por cantidad;
-- componer los estados de carga desde los loadings de cada container para que sigan la estructura final de la página.
-
-La IA ayudó a explorar alternativas, ejecutar implementaciones acotadas, contrastar documentación oficial y actuar como revisora independiente en sucesivas rondas de arquitectura, TypeScript, accesibilidad, SEO, responsive y tests. Varias propuestas fueron corregidas o descartadas tras compararlas con el briefing, las capturas y el comportamiento observado de la API. La selección de alcance, la aceptación de cada fase y la responsabilidad sobre el resultado final permanecieron en el candidato.
+La IA se utilizó como apoyo durante distintas fases del trabajo para explorar alternativas, contrastar la API y la documentación, preparar cambios acotados y revisar arquitectura, TypeScript, accesibilidad, responsive y tests. Las propuestas se validaron frente al briefing, los datos y el comportamiento real del proyecto antes de incorporarse. Las decisiones de alcance, la aceptación de los cambios y la responsabilidad sobre el resultado final permanecieron en el candidato.
