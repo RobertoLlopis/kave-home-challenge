@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Poppins } from 'next/font/google'
 
@@ -36,6 +37,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <FavoritesProvider mediaHost={environment.mediaHost}>
           <SiteShell>{children}</SiteShell>
         </FavoritesProvider>
+        <Analytics />
         <SpeedInsights />
       </body>
     </html>
